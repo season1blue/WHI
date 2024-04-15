@@ -9,11 +9,11 @@ python3 ./Train.py \
 --batch_size 16 \
 --lr 2e-5 \
 --text_model_name "deberta" \
---image_model_name "vit" \
+--image_model_name "clip" \
 --output_dir /data/results \
 --output_result_file /data/result.txt \
---log_dir ./data/log.log \
---device_id "cuda:1" \
+--log_dir log.log \
+--device_id "cuda:0" \
 --enable_log \
 --only_text_loss \
 --add_gan \

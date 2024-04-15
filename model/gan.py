@@ -16,6 +16,7 @@ from torch.nn import TransformerDecoder, TransformerDecoderLayer
 
 import torch.nn.functional as F
 
+LAYER_NUM = 12
 # some function
 def get_extended_attention_mask(attention_mask: Tensor, input_shape: Tuple[int], device: device) -> Tensor:
     """
@@ -91,8 +92,8 @@ class CLIPVisionEmbeddings(nn.Module):
         self.aux_position_embedding = nn.Embedding(48, self.embed_dim)
         self.register_buffer("aux_position_ids", torch.arange(48).expand((1, -1)))
 
-        self.rcnn_position_embedding = nn.Embedding(12, self.embed_dim)
-        self.register_buffer("rcnn_position_ids", torch.arange(12).expand((1, -1)))
+        self.rcnn_position_embedding = nn.Embedding(3, self.embed_dim)
+        self.register_buffer("rcnn_position_ids", torch.arange(3).expand((1, -1)))
 
     def forward(self, pixel_values, aux_embeddings=None, rcnn_embeddings=None):
         batch_size = pixel_values.shape[0]
@@ -116,7 +117,7 @@ class CLIPVisionEmbeddings(nn.Module):
                 rcnn_embed = self.patch_embedding(rcnn_embedding)
                 rcnn_embed = rcnn_embed.flatten(2).transpose(1, 2).flatten(0, 1)    # 3*4, 768 3个子图
                 rcnn_embeds.append(rcnn_embed)
-            rcnn_embeds = torch.stack(rcnn_embeds) # bsz, 12, 768
+            rcnn_embeds = torch.stack(rcnn_embeds) # bsz, 3, 768
             rcnn_embeds = rcnn_embeds + self.rcnn_position_embedding(self.rcnn_position_ids)
             embeddings = torch.cat((embeddings, rcnn_embeds), dim=1)
         return embeddings
@@ -180,7 +181,7 @@ class CLIPAttention(nn.Module):
         super().__init__()
         self.config = config
         self.embed_dim = config.hidden_size
-        self.num_heads = config.num_attention_heads
+        self.num_heads = LAYER_NUM
         self.head_dim = self.embed_dim // self.num_heads
         assert (
             self.head_dim * self.num_heads == self.embed_dim
@@ -205,12 +206,11 @@ class CLIPAttention(nn.Module):
         output_qks=None,
     ) -> Tuple[torch.Tensor, Optional[torch.Tensor], Optional[Tuple[torch.Tensor]]]:
         """Input shape: Batch x Time x Channel"""
-
-        bsz, tgt_len, embed_dim = hidden_states.size()
-
+        bsz, tgt_len, embed_dim = hidden_states.size()  #  torch.Size([16, 50, 768])
         # get query proj
         query_states = self.q_proj(hidden_states) * self.scale
         key_states = self._shape(self.k_proj(hidden_states), -1, bsz)
+        
         value_states = self._shape(self.v_proj(hidden_states), -1, bsz)
         qks = (key_states, value_states) if output_qks else None
 
@@ -277,8 +277,8 @@ class CLIPMLP(nn.Module):
 class BertSelfAttention(nn.Module):
     def __init__(self, config):
         super().__init__()
-        self.num_attention_heads = config.num_attention_heads   # 12
-        self.attention_head_size = int(config.hidden_size / config.num_attention_heads) # 64
+        self.num_attention_heads = LAYER_NUM  # 3
+        self.attention_head_size = int(config.hidden_size / self.num_attention_heads) # 64
         self.all_head_size = self.num_attention_heads * self.attention_head_size    # 768
 
         self.query = nn.Linear(config.hidden_size, self.all_head_size)
@@ -321,7 +321,7 @@ class BertSelfAttention(nn.Module):
         if attention_mask is not None and past_key_values is not None:
             # Apply the attention mask is (precomputed for all layers in BertModel forward() function)
             bsz, nheads, length, dsize = past_key_values[0].size()
-            visual_attention_mask = torch.ones((bsz, 1, 1, length)).to(attention_mask.device)  # bsz, 12, len, 64
+            visual_attention_mask = torch.ones((bsz, 1, 1, length)).to(attention_mask.device)  # bsz, 3, len, 64
             attention_mask = torch.cat((visual_attention_mask, attention_mask), dim=-1)
             attention_scores = attention_scores + attention_mask
         elif attention_mask is not None:
@@ -478,7 +478,6 @@ class CLIPEncoderLayer(nn.Module):
             return outputs
         else:
             residual = hidden_states
-
             hidden_states = self.layer_norm1(hidden_states)
             hidden_states, attn_weights, qks = self.self_attn(
                 hidden_states=hidden_states,
@@ -571,9 +570,9 @@ class BertLayer(nn.Module):
 class UnimoEncoder(nn.Module):
     def __init__(self, vision_config, text_config):
         super().__init__()
-        self.num_hidden_layers = 12
-        self.vision_num_hidden_layers = 12
-        self.text_num_hidden_layers = 12
+        self.num_hidden_layers = LAYER_NUM
+        self.vision_num_hidden_layers = LAYER_NUM
+        self.text_num_hidden_layers = LAYER_NUM
 
         self.vision_config = vision_config
         self.text_config = text_config
@@ -585,11 +584,11 @@ class UnimoEncoder(nn.Module):
         ### Multi-level Cross-modal Generation (MCG)
 
         self.text_generator = nn.ModuleList([Generator(vision_config, 60)])
-        self.vision_generator = nn.ModuleList([Generator(text_config, 197)])
+        self.vision_generator = nn.ModuleList([Generator(text_config, 50)])
 
         ###Stage-refined Context Sampler (SCS)
-        self.patch_selector = nn.ModuleList([ContextSampler(768) for _ in range(vision_config.num_hidden_layers)])
-        self.token_selector = nn.ModuleList([ContextSampler(768) for _ in range(text_config.num_hidden_layers)])
+        self.patch_selector = nn.ModuleList([ContextSampler(vision_config.hidden_size) for _ in range(vision_config.num_hidden_layers)])
+        self.token_selector = nn.ModuleList([ContextSampler(text_config.hidden_size) for _ in range(text_config.num_hidden_layers)])
 
 
     def forward(
@@ -630,14 +629,14 @@ class UnimoEncoder(nn.Module):
 
         for idx in range(self.num_hidden_layers):
             # vision
-            # TODO: 9-12 layers past text as pkv to vision
+            # TODO: 9-3 layers past text as pkv to vision
             output_qks = True
             if idx == 0:
                 bsz, token_length, dsize = text_embeds.size()
                 visual_past_key_values = None
             else:
                 generated_text_hidden_states = generated_text_hidden_states.contiguous()
-                visual_past_key_values = [generated_text_hidden_states.view(bsz, 12, token_length, dsize//12), generated_text_hidden_states.view(bsz, 12, token_length, dsize//12)]
+                visual_past_key_values = [generated_text_hidden_states.view(bsz, LAYER_NUM, token_length, dsize//LAYER_NUM), generated_text_hidden_states.view(bsz, LAYER_NUM, token_length, dsize//LAYER_NUM)]
 
             if idx != 0 :
                 vision_layer_module = self.vision_layers[idx]
@@ -651,13 +650,13 @@ class UnimoEncoder(nn.Module):
                 vision_hidden_states = vision_layer_output[0]
 
             # text
-            # TODO: 9-12 layers past vison qks to text
+            # TODO: 9-3 layers past vison qks to text
             if idx == 0:
                 bsz, patch_length, dsize = vision_embeds.size()
                 text_past_key_values = None
             else:
                 generated_vision_hidden_states = generated_vision_hidden_states.contiguous()
-                text_past_key_values = [generated_vision_hidden_states.view(bsz, 12, patch_length, dsize//12) ,generated_vision_hidden_states.view(bsz, 12, patch_length, dsize//12)]
+                text_past_key_values = [generated_vision_hidden_states.view(bsz, LAYER_NUM, patch_length, dsize//LAYER_NUM) ,generated_vision_hidden_states.view(bsz, LAYER_NUM, patch_length, dsize//LAYER_NUM)]
 
             if idx != 0 :
                 layer_head_mask = head_mask[idx] if head_mask is not None else None
@@ -674,10 +673,11 @@ class UnimoEncoder(nn.Module):
                 )
                 text_hidden_states = text_layer_output[0]
 
-
+            #texthiddenstates 16 60 768   
+            
             # Stage-refined Context Sampler (SCS)
             # 1 denote keep token
-            spatial_text_hidden_states = text_hidden_states[:, 1:]
+            spatial_text_hidden_states = text_hidden_states[:, 1:]  # 16 59 768
             pred_token_score = self.token_selector[idx](spatial_text_hidden_states, prev_token_decision).reshape(bz,-1,2)
             token_hard_keep_decision = F.gumbel_softmax(pred_token_score, hard=True)[:, :, 0:1]
             if idx != 0:
@@ -706,7 +706,8 @@ class UnimoEncoder(nn.Module):
 
             ## reconstruction for MCG ###
             text_generator = self.text_generator[0]
-            generated_text_hidden_states = text_generator(vision_hidden_states,patch_policy)
+            generated_text_hidden_states = text_generator(vision_hidden_states)
+            
             vision_generator = self.vision_generator[0]
             generated_vision_hidden_states = vision_generator(text_hidden_states, token_policy)
 
@@ -714,13 +715,14 @@ class UnimoEncoder(nn.Module):
             ## cycle consistency for MCG
             cycle_text_hidden_state =  text_generator(generated_vision_hidden_states)
             cycle_vision_hidden_state = vision_generator(generated_text_hidden_states)
+            # cycle_text_hidden_state = generated_text_hidden_states
+            # cycle_vision_hidden_state = generated_vision_hidden_states
 
 
 
             # if output_attentions:
             #     all_vision_attentions = all_vision_attentions + (vision_layer_output[1], )
             #     all_text_attentions = all_text_attentions + (text_layer_output[1], )
-
             if patch_policy != None and token_policy != None:
                 patch_policy = patch_policy.squeeze(1).transpose(-1,-2)
                 patch_policy = (patch_policy==0.).float()
@@ -825,7 +827,7 @@ class UnimoModel(nn.Module):
             raise ValueError("token_type_ids is None!")
 
         extended_attention_mask: torch.Tensor = get_extended_attention_mask(attention_mask, input_shape, device)
-        head_mask = get_head_mask(head_mask, self.text_config.num_hidden_layers)    # [None]*12
+        head_mask = get_head_mask(head_mask, self.text_config.num_hidden_layers)    # [None]*3
 
         text_embedding_output = self.text_embeddings(
             input_ids=input_ids,
@@ -974,7 +976,6 @@ class Generator(nn.Module):
         encoder_output = hidden_states.transpose(0,1)
         modality_query = modality_query.transpose(0,1)
         output = self.generator_layer(memory=encoder_output, tgt = modality_query, memory_key_padding_mask = src_mask)
-
         return output.transpose(0,1)
 
 

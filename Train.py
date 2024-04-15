@@ -77,7 +77,6 @@ test_dataloader = DataLoader(test_dataset, batch_size=args.batch_size)
 
 
 text_config, image_config = model_select(args)
-
 vb_model = GANModel(args, text_config, image_config, text_num_labels=5, text_model_name=args.text_model_name,
                      image_model_name=args.image_model_name, alpha=args.alpha, beta=args.beta)
 

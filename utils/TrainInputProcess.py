@@ -89,43 +89,13 @@ class TrainInputProcess:
         self.text_model = AutoModel.from_pretrained(args.name_path_dict[text_model_name]).to(self.device)
         self.image_model = AutoModel.from_pretrained(args.name_path_dict[image_model_name]).to(self.device)
         
+        if image_model_name == "clip" or "laion":
+            self.image_model = CLIPVisionModel.from_pretrained(args.name_path_dict[image_model_name]).to(self.device)
         # self.ct_tokenizer = AutoTokenizer.from_pretrained("openai/clip-vit-base-patch32")
         # self.cv_processor = AutoProcessor.from_pretrained("openai/clip-vit-base-patch32")
         # self.ct_model = CLIPTextModel.from_pretrained("openai/clip-vit-base-patch32").to(self.device)
         # self.cv_model = CLIPVisionModel.from_pretrained("openai/clip-vit-base-patch32").to(self.device)
 
-
-    def torch_mask_tokens(self, inputs: Any, special_tokens_mask: Optional[Any] = None) -> Tuple[Any, Any]:
-        """
-        Prepare masked tokens inputs/labels for masked language modeling: 80% MASK, 10% random, 10% original.
-        """
-        labels = inputs.clone()
-        # We sample a few tokens in each sequence for MLM training (with probability `self.mlm_probability`)
-        mlm_probability=0.15
-        probability_matrix = torch.full(labels.shape, mlm_probability)
-        if special_tokens_mask is None:
-            special_tokens_mask = [
-                self.tokenizer.get_special_tokens_mask(val, already_has_special_tokens=True) for val in labels.tolist()
-            ]
-            special_tokens_mask = torch.tensor(special_tokens_mask, dtype=torch.bool)
-        else:
-            special_tokens_mask = special_tokens_mask.bool()
-
-        probability_matrix.masked_fill_(special_tokens_mask, value=0.0)
-        masked_indices = torch.bernoulli(probability_matrix).bool()
-        labels[~masked_indices] = -100  # We only compute loss on masked tokens
-
-        # 80% of the time, we replace masked input tokens with tokenizer.mask_token ([MASK])
-        indices_replaced = torch.bernoulli(torch.full(labels.shape, 0.8)).bool() & masked_indices
-        inputs[indices_replaced] = self.tokenizer.convert_tokens_to_ids(self.tokenizer.mask_token)
-
-        # 10% of the time, we replace masked input tokens with random word
-        indices_random = torch.bernoulli(torch.full(labels.shape, 0.5)).bool() & masked_indices & ~indices_replaced
-        random_words = torch.randint(len(self.tokenizer), labels.shape, dtype=torch.long)
-        inputs[indices_random] = random_words[indices_random]
-
-        # The rest of the time (10% of the time) we keep the masked input tokens unchanged
-        return inputs, labels
 
 
     # process fine-tune text
@@ -211,9 +181,6 @@ class TrainInputProcess:
             #     text_feature = self.ct_model(**tokenized_inputs).last_hidden_state
             # tokenized_inputs["text_feature"] = text_feature
             
-            print(tokenized_inputs["input_ids"][1])
-            print(sum(tokenized_inputs["attention_mask"][1]))
-            exit()
             # label处理
             text_labels, cross_labels = [], []
             for i, label in enumerate(label_l):
@@ -252,7 +219,6 @@ class TrainInputProcess:
 
                     inputs = self.processor(images=image, return_tensors="pt").to(self.device)
                     pixel_values.append(inputs["pixel_values"])
-                    
                     outputs = self.image_model(**inputs)
                     image_feature = torch.squeeze(outputs.last_hidden_state, 1)
                     image_features.append(image_feature) 
@@ -286,8 +252,6 @@ class TrainInputProcess:
                 text_feature = torch.cat(text_feature, dim=0)
                 image_feature = torch.cat(image_feature, dim=0)
 
-                print(text_feature.size())
-                print(image_feature.size())
 
                 self.input[dataset_type]["text_feature"] = text_feature
                 self.input[dataset_type]["image_feature"] = image_feature

@@ -532,6 +532,7 @@ class GANModel(nn.Module):
         self.text_pooler = BertPooler(text_config)
         self.img_pooler = BertPooler(text_config)
 
+        self.gen_linear = nn.Linear(text_config.hidden_size, text_config.hidden_size)
     def forward(self,
                 input_ids=None,
                 attention_mask=None,
@@ -553,33 +554,12 @@ class GANModel(nn.Module):
 
         return_dict = return_dict if return_dict is not None else self.text_config.use_return_dict
 
-        
         text_outputs = self.text_model(
             input_ids, attention_mask=attention_mask, token_type_ids=token_type_ids, position_ids=position_ids, inputs_embeds=inputs_embeds)
+        # image_outputs = self.image_model(pixel_values)
+        # print(image_feature.size())
+        
         text_feature = text_outputs["last_hidden_state"]  #16, 60, 768
-        
-        image_outputs = self.image_model(pixel_values)
-        image_feature = image_outputs["last_hidden_state"]   # 16, 197, 768
-        
-        
-        # converted_image_feature = self.vismap2text(image_feature)  # self.batch_size, hidden_dim
-
-        # #transpose_img_embed = converted_vis_embed_map.unsqueeze(1)
-        # text_img_output = torch.cat((converted_image_feature, text_feature), dim=1)
-        # comb_attention_mask = torch.cat([torch.ones(1,197).to(self.args.device), attention_mask], dim=1)  # only the first dimension is for image
-        # extended_attention_mask = comb_attention_mask.unsqueeze(1).unsqueeze(2)
-        # extended_attention_mask = extended_attention_mask.to(dtype=next(self.parameters()).dtype)  # fp16 compatibility
-
-        # #img_att_text_output_layer = self.img_attention(text_img_output, extended_attention_mask)
-        # multimodal_encoder = self.comb_attention(text_img_output, extended_attention_mask)
-        # img_att_text_output_layer = multimodal_encoder[-1]
-        # print(img_att_text_output_layer.size())
-
-        
-        # text_output = self.text_pooler(img_att_text_output_layer)
-        # img_output = self.img_pooler(img_att_text_output_layer)
-        # final_output = torch.cat((text_output, img_output), dim=-1)
-        # print("final", final_output.size())
         
         
 
@@ -596,6 +576,7 @@ class GANModel(nn.Module):
 
             text_feature = encoder_outputs.last_text_state
             image_feature = encoder_outputs.last_vision_state
+
 
 
         sequence_output1 = self.dropout(text_feature)

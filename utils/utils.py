@@ -63,7 +63,8 @@ def parse_arg():
         "robertat": "cardiffnlp/twitter-roberta-base-sentiment-latest",
         "vit":      "../_weight/vit-base-patch16-224-in21k",
         "xlm":      'xlm-roberta-base',
-        "debertal": "microsoft/deberta-v3-large"
+        "debertal": "microsoft/deberta-v3-large",
+        "laion":    "laion/CLIP-ViT-bigG-14-laion2B-39B-b160k"
     }
     
     
@@ -91,11 +92,13 @@ def model_select(args):
         text_config = AutoConfig.from_pretrained(model_path1)
     
     if args.image_model_name == "clip":
-        text_config = CLIPVisionConfig()
+        image_config = CLIPVisionConfig()
     else:
         model_path1 = args.name_path_dict[args.image_model_name]
         image_config = AutoConfig.from_pretrained(model_path1)
-    
+        if args.image_model_name == "laion":
+            image_config = image_config.vision_config
+            # image_config.num_heads = image_config.num_attention_heads
     return text_config, image_config
 
     # text pretrained model selected
