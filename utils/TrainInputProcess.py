@@ -104,11 +104,8 @@ class TrainInputProcess:
         for dataset_type in self.dataset_types:
             data_file_name = dataset_type + self.text_type
             text_path = os.path.join(self.data_text_dir, data_file_name)
-            sentence_d = collections.defaultdict(list)
-            sentence_l = []
-            image_l = []
-            label_l = []
-            pair_l = []
+            sentence_l, image_l, sentiment_l, aspect_l = [], [], [], []
+            text_data = []
             with open(text_path,'r',encoding="utf-8") as f:
                 while True:
                     text = f.readline().rstrip('\n').split()
@@ -120,40 +117,14 @@ class TrainInputProcess:
                     start_pos = text.index("$T$")
                     end_pos = start_pos + len(aspect) - 1
                     text = text[:start_pos] + aspect + text[start_pos+1:]
-                    sentence_d[" ".join(text)].append((start_pos,end_pos,sentiment,image_path))
-                for key,value in sentence_d.items():
-                    # print(key)
-                    text = key.split()
-                    sentence_l.append(text)
-                    n_key =len(text)
-                    s_label = [0] * n_key
-                    s_pair = []
-                    image_l.append(value[0][3])
-                    for vv in value:
-                        # print("-----")
-                        # print(vv)
-                        v_sentiment = int(vv[2]) + 1
-                        # print(v_sentiment)
-                        if process_label:
-                            s_label[vv[0]] = v_sentiment + 1
-                        else:
-                            s_label[vv[0]] = v_sentiment + 2
-                        for i in range(vv[0] + 1, vv[1] + 1):
-                            if process_label:
-                                s_label[i] = v_sentiment + 4
-                            else:
-                                s_label[i] = 1
-                        s_pair.append((str(vv[0]) + "-" + str(vv[1]), v_sentiment))
-                    #text ['RT', '@', 'ltsChuckBass', ':', 'Chuck', 'Bass', 'is', 'everything', '#', 'MCM']
-                    #slabel [0, 0, 0, 0, 4, 1, 0, 0, 3, 1]
-                    #spair [('4-5', 2), ('8-9', 1)]
-                    # print(text)
-                    # print(s_label)
-                    # print(s_pair)
-                    # exit()
-                    label_l.append(s_label)
-                    pair_l.append(s_pair)
-                self.data_dict[dataset_type] = (sentence_l, image_l, label_l, pair_l)
+                    text_data.append((" ".join(aspect), " ".join(text), sentiment, image_path))
+                     
+            for item in text_data:
+                aspect_l.append([item[0]])
+                sentence_l.append([item[1]])
+                sentiment_l.append(int(item[2])+1)  # -1,0,1 -> 0, 1, 2 
+                image_l.append(item[3])
+            self.data_dict[dataset_type] = (aspect_l, sentence_l, sentiment_l, image_l)
     
     
     
@@ -161,54 +132,17 @@ class TrainInputProcess:
     
     def generate_dualc_input(self):
         for dataset_type in self.dataset_types:
-            sentence_l, image_l, label_l, pair_l = self.data_dict[dataset_type]
-            
-            # for sentence in sentence_l:
-            #     new_sentence_l.append(" ".join(sentence))
+            aspect_l, sentence_l, sentiment_l, image_l = self.data_dict[dataset_type]
             if self.text_model_name == "clip":
                 new_sentence_l = [" ".join(sentence) for sentence in sentence_l]
                 tokenized_inputs = self.tokenizer(new_sentence_l, padding=True, return_tensors="pt").to(self.device)
             else:
                 tokenized_inputs = self.tokenizer(sentence_l, truncation=True, is_split_into_words=True, padding='max_length', max_length=60, return_tensors='pt').to(self.device)
-                
-            # tokenized_inputs["input_ids"] = clip_tokenized_inputs
-            # tokenized_inputs = self.tokenizer(sentence_l, truncation=True, is_split_into_words=True, padding='max_length', max_length=60, return_tensors='pt')
-            
-            # results["input_ids"] = tokenized_inputs["input_ids"]
-            # results["attention_mask"] = tokenized_inputs["attention_mask"]
-            
-            # with torch.no_grad():
-            #     text_feature = self.ct_model(**tokenized_inputs).last_hidden_state
-            # tokenized_inputs["text_feature"] = text_feature
-            
-            # label处理
-            text_labels, cross_labels = [], []
-            for i, label in enumerate(label_l):
-                word_ids = tokenized_inputs.word_ids(batch_index=i)  # Map tokens to their respective word.
+                tokenized_aspect = self.tokenizer(aspect_l, truncation=True, is_split_into_words=True, padding='max_length', max_length=60, return_tensors='pt').to(self.device)
+                tokenized_inputs["aspect_ids"] = tokenized_aspect["input_ids"]
+                tokenized_inputs["aspect_masks"] = tokenized_aspect["attention_mask"]
 
-                label_ids = []
-                cross_label_ids = []
-                label_n = len(label)
-                pre_word_idx = None
-                for word_idx in word_ids:  # Set the special tokens to -100.
-                    if word_idx is None or word_idx >= label_n:
-                        label_ids.append(-100)
-                        cross_label_ids.append(0)
-                    else:
-                        if pre_word_idx != word_idx:
-                            label_ids.append(label[word_idx])
-                            cross_label_ids.append(label[word_idx])
-                        else:
-                            label_ids.append(-100)
-                            cross_label_ids.append(0)
-                    pre_word_idx = word_idx
-                cross_labels.append(cross_label_ids)
-                text_labels.append(label_ids)
-            
-            tokenized_inputs["labels"] = torch.tensor(text_labels)
-            tokenized_inputs["cross_labels"] = torch.tensor(cross_labels)
-            tokenized_inputs["pairs"] = pair_l
-            
+            tokenized_inputs["sentiment"] = torch.tensor(sentiment_l)
             
             pixel_values, image_features = [], []
             with torch.no_grad():
@@ -225,6 +159,8 @@ class TrainInputProcess:
             
             tokenized_inputs["pixel_values"] = torch.cat(pixel_values, dim=0)
             tokenized_inputs["image_feature"] = torch.cat(image_features, dim=0)
+            
+            
             
             self.input[dataset_type] = tokenized_inputs
 

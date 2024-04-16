@@ -53,6 +53,34 @@ def cal_f1(p_pred_labels, text_inputs, p_pairs, is_result=False):
     else:
         return precision * 100, recall * 100, f1 * 100
 
+
+
+def cal_sen_f1(text_pred_sum, text_inputs, sentiment_l, is_result=False):
+    gold_num, predict_num, correct_num = 0, 0, 0
+    pred_pair_list = []
+    
+    gold_num = len(sentiment_l)
+    for i, pred in enumerate(text_pred_sum):
+        label = sentiment_l[i]
+        if pred == label :
+            correct_num += 1
+        
+        
+        true_pair = set(p_pairs[i])
+        gold_num += len(true_pair)
+        predict_num += len(list(pred_pair))
+        pred_pair_list.append(pred_pair.copy())
+        correct_num += len(true_pair & pred_pair)
+    precision, recall, f1 = 0, 0, 0
+
+    precision = correct_num / predict_num if predict_num != 0 else 0
+    recall = correct_num / gold_num if gold_num != 0 else 0
+    f1 = (2 * precision * recall) / (precision + recall) if precision != 0 or recall != 0 else 0
+
+    return precision * 100, recall * 100, f1 * 100
+
+
+
 def cal_single_f1(p_pred_labels,p_inputs,p_pairs,is_result=False):
     gold_num = 0
     predict_num = 0

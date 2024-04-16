@@ -515,6 +515,7 @@ class GANModel(nn.Module):
             )
         self.dropout = nn.Dropout(0.1)
         self.loss_fct = CrossEntropyLoss()
+        self.text_num_labels = 3
         self.classifier1 = nn.Linear(text_config.hidden_size, self.text_num_labels)
         self.classifier0 = nn.Linear(text_config.hidden_size, self.text_num_labels)
         self.CRF = CRF(self.text_num_labels, batch_first=True)
@@ -536,9 +537,9 @@ class GANModel(nn.Module):
     def forward(self,
                 input_ids=None,
                 attention_mask=None,
+                aspect_ids=None,
+                aspect_masks=None,
                 text_feature=None,
-                text_logits_feature=None,
-                text_hidden_feature=None,
                 image_feature=None,
                 token_type_ids=None,
                 position_ids=None,
@@ -548,12 +549,11 @@ class GANModel(nn.Module):
                 output_attentions=True,
                 output_hidden_states=True,
                 image_labels=None,
-                head_mask=None,
+                sentiment=None,
                 cross_labels=None,
                 return_dict=None):
 
         return_dict = return_dict if return_dict is not None else self.text_config.use_return_dict
-
         text_outputs = self.text_model(
             input_ids, attention_mask=attention_mask, token_type_ids=token_type_ids, position_ids=position_ids, inputs_embeds=inputs_embeds)
         # image_outputs = self.image_model(pixel_values)
@@ -577,8 +577,8 @@ class GANModel(nn.Module):
             text_feature = encoder_outputs.last_text_state
             image_feature = encoder_outputs.last_vision_state
 
-
-
+        text_feature = text_feature[:, 0]
+        
         sequence_output1 = self.dropout(text_feature)
         text_token_logits = self.classifier1(sequence_output1)
         
@@ -587,7 +587,7 @@ class GANModel(nn.Module):
         # weights = torch.ones(labels.shape).to(labels.device)
         # text_loss = loss_fct(text_token_logits.view(-1, self.text_num_labels), labels.view(-1), weights)
         
-        text_loss = self.loss_fct(text_token_logits.view(-1, self.text_num_labels), labels.view(-1))
+        text_loss = self.loss_fct(text_token_logits.view(-1, self.text_num_labels), sentiment.view(-1))
         if self.args.only_text_loss :
             #  * vision-aware text # cross_crf_loss
             loss = text_loss 

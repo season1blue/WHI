@@ -1,9 +1,10 @@
 
-from utils.metrics import cal_f1
+from utils.metrics import cal_f1, cal_sen_f1
 import torch 
 import numpy as np
+from sklearn.metrics import f1_score, precision_score, recall_score
 
-def evaluate(args, vb_model, eval_dataloader, text_inputs, pairs):
+def evaluate(args, vb_model, eval_dataloader, text_inputs, sentiment):
     eval_loss = 0.0
     nb_eval_steps = 0
     vb_model.to(args.device)
@@ -11,6 +12,7 @@ def evaluate(args, vb_model, eval_dataloader, text_inputs, pairs):
 
     text_pred_list = []
     cross_pred_list = []
+    count = 0
     with torch.no_grad():
         for i, batch in enumerate(eval_dataloader):
             for k in batch:
@@ -23,18 +25,24 @@ def evaluate(args, vb_model, eval_dataloader, text_inputs, pairs):
 
             text_pred_labels = np.argmax(text_logits.cpu(), -1)
             text_pred_list.append(text_pred_labels)
-
+            count += text_logits.size(0)
             nb_eval_steps += 1
-
-    text_pred_sum = np.vstack(text_pred_list)
+    pred_result = np.array([])
+    for array in text_pred_list:
+        pred_result = np.concatenate((pred_result, array), axis=None)
+    
+    f1          = f1_score(sentiment, pred_result, average='macro')
+    precision   = precision_score(sentiment, pred_result, average='macro')
+    recall      = recall_score(sentiment, pred_result, average='macro')    
+    
 
     # cross_precision, cross_recall, cross_f1 = cal_f1(cross_pred_sum, text_inputs, pairs)
     
-    text_precision, text_recall, text_f1 = cal_f1(text_pred_sum, text_inputs, pairs)
+    # text_precision, text_recall, text_f1 = cal_sen_f1(pred_result, text_inputs, sentiment)
 
     eval_loss = eval_loss.item() / nb_eval_steps
     
-    results = {"f1": text_f1, "precision" : text_precision, "recall": text_recall, "loss": float(eval_loss)}
+    results = {"f1": f1*100, "precision" : precision*100, "recall": recall*100, "loss": float(eval_loss)}
     # logger.info(f"Eval loss: {eval_loss}, Eval time: {time() - time_eval_beg:2f}")
 
     return results, eval_loss

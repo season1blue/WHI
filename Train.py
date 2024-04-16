@@ -61,18 +61,19 @@ data_inputs = torch.load(file_path)
 
 
 
-test_pairs = data_inputs["test"]["pairs"]
-data_inputs["train"].pop("pairs")
-data_inputs["dev"].pop("pairs")
-data_inputs["test"].pop("pairs")
+# test_pairs = data_inputs["test"]["pairs"]
+test_sentiment = data_inputs["test"]["sentiment"]
+# data_inputs["train"].pop("pairs")
+# data_inputs["dev"].pop("pairs")
+# data_inputs["test"].pop("pairs")
 
 train_dataset = MyDataSet2(inputs=data_inputs["train"])
 dev_dataset = MyDataSet2(inputs=data_inputs["dev"])
 test_dataset = MyDataSet2(inputs=data_inputs["test"])
 
-train_dataloader = DataLoader(train_dataset, batch_size=args.batch_size)
-dev_dataloader = DataLoader(dev_dataset, batch_size=args.batch_size)
-test_dataloader = DataLoader(test_dataset, batch_size=args.batch_size)
+train_dataloader    = DataLoader(train_dataset, batch_size=args.batch_size)
+dev_dataloader      = DataLoader(dev_dataset, batch_size=args.batch_size)
+test_dataloader     = DataLoader(test_dataset, batch_size=args.batch_size)
 
 
 
@@ -167,7 +168,7 @@ for epoch in range(epochs_trained, int(args.epochs)):
             # save model if args.save_steps>0
             if args.save_steps > 0 and global_step % args.save_steps == 0:
                 # Log metrics
-                results, _ = evaluate(args, vb_model, test_dataloader, data_inputs["test"], test_pairs)
+                results, _ = evaluate(args, vb_model, test_dataloader, data_inputs["test"], test_sentiment)
                 if results["f1"] >= best_result["f1"]:
                     best_result = results
                     best_result["epoch"] = epoch
