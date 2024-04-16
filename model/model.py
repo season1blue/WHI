@@ -516,8 +516,9 @@ class GANModel(nn.Module):
         self.dropout = nn.Dropout(0.1)
         self.loss_fct = CrossEntropyLoss()
         self.text_num_labels = 3
-        self.classifier1 = nn.Linear(text_config.hidden_size, self.text_num_labels)
+        self.text_linear = nn.Linear(text_config.hidden_size, self.text_num_labels)
         self.classifier0 = nn.Linear(text_config.hidden_size, self.text_num_labels)
+        self.image_linear = nn.Linear(vision_config.hidden_size, text_config.hidden_size)
         self.CRF = CRF(self.text_num_labels, batch_first=True)
 
         # text model
@@ -558,9 +559,10 @@ class GANModel(nn.Module):
             input_ids, attention_mask=attention_mask, token_type_ids=token_type_ids, position_ids=position_ids, inputs_embeds=inputs_embeds)
         # image_outputs = self.image_model(pixel_values)
         # print(image_feature.size())
+        aspect_outputs = self.text_model(aspect_ids, attention_mask=aspect_masks)
         
         text_feature = text_outputs["last_hidden_state"]  #16, 60, 768
-        
+        aspect_feature = aspect_outputs["last_hidden_state"]
         
 
         if self.args.add_gan:
@@ -577,10 +579,17 @@ class GANModel(nn.Module):
             text_feature = encoder_outputs.last_text_state
             image_feature = encoder_outputs.last_vision_state
 
+        image_feature = self.image_linear(image_feature[:, 0])
         text_feature = text_feature[:, 0]
+        aspect_feature = aspect_feature[:, 0]
         
-        sequence_output1 = self.dropout(text_feature)
-        text_token_logits = self.classifier1(sequence_output1)
+        fusion = text_feature + aspect_feature
+
+
+        sequence_output1 = self.dropout(fusion)
+        text_token_logits = self.text_linear(sequence_output1)
+
+        
         
         # * text only # text_loss
         # loss_fct = GCELoss()            
