@@ -31,9 +31,9 @@ def evaluate(args, vb_model, eval_dataloader, text_inputs, sentiment):
     for array in text_pred_list:
         pred_result = np.concatenate((pred_result, array), axis=None)
     
-    f1          = f1_score(sentiment, pred_result, average='macro')
-    precision   = precision_score(sentiment, pred_result, average='macro')
-    recall      = recall_score(sentiment, pred_result, average='macro')    
+    f1          = f1_score(sentiment, pred_result, average='micro')
+    precision   = precision_score(sentiment, pred_result, average='micro')
+    recall      = recall_score(sentiment, pred_result, average='micro')    
     
 
     # cross_precision, cross_recall, cross_f1 = cal_f1(cross_pred_sum, text_inputs, pairs)

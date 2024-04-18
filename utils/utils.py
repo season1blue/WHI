@@ -74,6 +74,9 @@ def parse_arg():
     args.data_image_dir = '../data/ImgData/twitter' + args.dataset_type
     args.cache_dir = 'cache'
     
+    args.refresh_aspect = False
+    args.refresh_data = True
+    
     return args
 
 

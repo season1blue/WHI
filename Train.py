@@ -52,19 +52,21 @@ logger.addHandler(ch)
 file_name = 'input_' + args.text_model_name + "_" + args.image_model_name + '.pt'
 file_path = os.path.join(args.cache_dir, args.dataset_type, file_name)
 print(file_path)
-refresh = False
-if not os.path.exists(file_path) or refresh:
+if not os.path.exists(file_path) or args.refresh_data:
     print("Preparing Data")
     prepare_data(args, file_path=file_path)
     
 data_inputs = torch.load(file_path)
 
-from aspect.aspect_method import aspect_method
-# Aspect
-aspect_predictor = aspect_method(args=args)
-train_aspect = aspect_predictor.predict("train")
-dev_aspect = aspect_predictor.predict("dev")
+# from aspect.aspect_method import aspect_method
+# # Aspect
+# aspect_predictor = aspect_method(args=args)
+# train_aspect = aspect_predictor.predict("train")
+# dev_aspect = aspect_predictor.predict("dev")
 
+
+# print(sum([len(d) for d in dev_aspect]))  #1105  预测的aspect数量
+# print(len(data_inputs["dev"]["aspect"]))  # 1122   # 实际的aspect数量，这是一一对应的
 
 
 # test_pairs = data_inputs["test"]["pairs"]

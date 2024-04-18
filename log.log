@@ -3925,3 +3925,153 @@
 04/17 21:49:05:  ======================== New Round =============================
 04/17 21:49:05:  2015, add_gan:False, add_gan_loss: False, add_gpt: False, text_model deberta
 04/17 21:49:05:  Namespace(adam_epsilon=1e-08, add_cycle=False, add_gan=False, add_gan_loss=False, add_gpt=False, add_llm=False, alpha=0.6, aspect_epochs=10, batch_size=64, beta=0.6, cache_dir='cache', data_image_dir='../data/ImgData/twitter2015', data_text_dir='../data/twitter2015', dataset_type='2015', device=device(type='cuda', index=0), device_id='cuda:0', enable_log=True, epochs=100, gradient_accumulation_steps=1, image_model_name='clip', log_dir='log.log', logging_steps=500, lr=2e-05, max_grad_norm=1.0, max_steps=-1, name_path_dict={'bert': '../_weight/deberta', 'roberta': '../_weight/roberta-base', 'deberta': '../_weight/deberta', 'clip': 'openai/clip-vit-base-patch32', 'robertat': 'cardiffnlp/twitter-roberta-base-sentiment-latest', 'vit': '../_weight/vit-base-patch16-224-in21k', 'xlm': 'xlm-roberta-base', 'debertal': 'microsoft/deberta-v3-large', 'laion': 'laion/CLIP-ViT-bigG-14-laion2B-39B-b160k'}, only_text_loss=True, output_dir='/data/results', output_result_file='/data/result.txt', random_seed=42, save_steps=100, task_name='dualc', text_model_name='deberta', warmup_steps=100, weight_decay=0.01)
+04/18 15:58:22:  ======================== New Round =============================
+04/18 15:58:22:  2015, add_gan:False, add_gan_loss: False, add_gpt: False, text_model deberta
+04/18 15:58:22:  Namespace(adam_epsilon=1e-08, add_cycle=False, add_gan=False, add_gan_loss=False, add_gpt=False, add_llm=False, alpha=0.6, aspect_epochs=10, batch_size=64, beta=0.6, cache_dir='cache', data_image_dir='../data/ImgData/twitter2015', data_text_dir='../data/twitter2015', dataset_type='2015', device=device(type='cuda', index=0), device_id='cuda:0', enable_log=True, epochs=100, gradient_accumulation_steps=1, image_model_name='clip', log_dir='log.log', logging_steps=500, lr=2e-05, max_grad_norm=1.0, max_steps=-1, name_path_dict={'bert': '../_weight/deberta', 'roberta': '../_weight/roberta-base', 'deberta': '../_weight/deberta', 'clip': 'openai/clip-vit-base-patch32', 'robertat': 'cardiffnlp/twitter-roberta-base-sentiment-latest', 'vit': '../_weight/vit-base-patch16-224-in21k', 'xlm': 'xlm-roberta-base', 'debertal': 'microsoft/deberta-v3-large', 'laion': 'laion/CLIP-ViT-bigG-14-laion2B-39B-b160k'}, only_text_loss=True, output_dir='/data/results', output_result_file='/data/result.txt', random_seed=42, refresh_aspect=False, refresh_data=False, save_steps=100, task_name='dualc', text_model_name='deberta', warmup_steps=100, weight_decay=0.01)
+04/18 16:01:41:  ======================== New Round =============================
+04/18 16:01:41:  2015, add_gan:False, add_gan_loss: False, add_gpt: False, text_model deberta
+04/18 16:01:41:  Namespace(adam_epsilon=1e-08, add_cycle=False, add_gan=False, add_gan_loss=False, add_gpt=False, add_llm=False, alpha=0.6, aspect_epochs=10, batch_size=64, beta=0.6, cache_dir='cache', data_image_dir='../data/ImgData/twitter2015', data_text_dir='../data/twitter2015', dataset_type='2015', device=device(type='cuda', index=0), device_id='cuda:0', enable_log=True, epochs=100, gradient_accumulation_steps=1, image_model_name='clip', log_dir='log.log', logging_steps=500, lr=2e-05, max_grad_norm=1.0, max_steps=-1, name_path_dict={'bert': '../_weight/deberta', 'roberta': '../_weight/roberta-base', 'deberta': '../_weight/deberta', 'clip': 'openai/clip-vit-base-patch32', 'robertat': 'cardiffnlp/twitter-roberta-base-sentiment-latest', 'vit': '../_weight/vit-base-patch16-224-in21k', 'xlm': 'xlm-roberta-base', 'debertal': 'microsoft/deberta-v3-large', 'laion': 'laion/CLIP-ViT-bigG-14-laion2B-39B-b160k'}, only_text_loss=True, output_dir='/data/results', output_result_file='/data/result.txt', random_seed=42, refresh_aspect=False, refresh_data=True, save_steps=100, task_name='dualc', text_model_name='deberta', warmup_steps=100, weight_decay=0.01)
+04/18 16:02:06:  #RES: f1:68.274, precision:68.274, recall:68.274, loss:0.670 at 1
+04/18 16:02:06:  Best: f1:68.274, precision:68.274, recall:68.274, loss:0.670 at 1
+04/18 16:02:06:  ---------
+04/18 16:02:31:  #RES: f1:71.938, precision:71.938, recall:71.938, loss:0.623 at 3
+04/18 16:02:31:  Best: f1:71.938, precision:71.938, recall:71.938, loss:0.623 at 3
+04/18 16:02:31:  ---------
+04/18 16:02:55:  #RES: f1:70.203, precision:70.203, recall:70.203, loss:0.705 at 5
+04/18 16:02:55:  Best: f1:71.938, precision:71.938, recall:71.938, loss:0.623 at 3
+04/18 16:02:55:  ---------
+04/18 16:03:20:  #RES: f1:69.335, precision:69.335, recall:69.335, loss:0.906 at 7
+04/18 16:03:20:  Best: f1:71.938, precision:71.938, recall:71.938, loss:0.623 at 3
+04/18 16:03:20:  ---------
+04/18 16:03:45:  #RES: f1:70.010, precision:70.010, recall:70.010, loss:0.824 at 9
+04/18 16:03:45:  Best: f1:71.938, precision:71.938, recall:71.938, loss:0.623 at 3
+04/18 16:03:45:  ---------
+04/18 16:04:11:  #RES: f1:70.395, precision:70.395, recall:70.395, loss:0.939 at 11
+04/18 16:04:11:  Best: f1:71.938, precision:71.938, recall:71.938, loss:0.623 at 3
+04/18 16:04:11:  ---------
+04/18 16:04:36:  #RES: f1:71.745, precision:71.745, recall:71.745, loss:0.936 at 13
+04/18 16:04:36:  Best: f1:71.938, precision:71.938, recall:71.938, loss:0.623 at 3
+04/18 16:04:36:  ---------
+04/18 16:05:01:  #RES: f1:71.070, precision:71.070, recall:71.070, loss:0.947 at 15
+04/18 16:05:01:  Best: f1:71.938, precision:71.938, recall:71.938, loss:0.623 at 3
+04/18 16:05:01:  ---------
+04/18 16:05:26:  #RES: f1:72.324, precision:72.324, recall:72.324, loss:1.000 at 17
+04/18 16:05:26:  Best: f1:72.324, precision:72.324, recall:72.324, loss:1.000 at 17
+04/18 16:05:26:  ---------
+04/18 16:05:51:  #RES: f1:72.613, precision:72.613, recall:72.613, loss:0.949 at 19
+04/18 16:05:51:  Best: f1:72.613, precision:72.613, recall:72.613, loss:0.949 at 19
+04/18 16:05:51:  ---------
+04/18 16:06:17:  #RES: f1:69.527, precision:69.527, recall:69.527, loss:1.079 at 21
+04/18 16:06:17:  Best: f1:72.613, precision:72.613, recall:72.613, loss:0.949 at 19
+04/18 16:06:17:  ---------
+04/18 16:06:42:  #RES: f1:70.492, precision:70.492, recall:70.492, loss:1.144 at 23
+04/18 16:06:42:  Best: f1:72.613, precision:72.613, recall:72.613, loss:0.949 at 19
+04/18 16:06:42:  ---------
+04/18 16:07:07:  #RES: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:07:07:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:07:07:  ---------
+04/18 16:07:32:  #RES: f1:71.745, precision:71.745, recall:71.745, loss:1.098 at 27
+04/18 16:07:32:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:07:32:  ---------
+04/18 16:07:58:  #RES: f1:72.324, precision:72.324, recall:72.324, loss:1.235 at 29
+04/18 16:07:58:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:07:58:  ---------
+04/18 16:08:23:  #RES: f1:71.263, precision:71.263, recall:71.263, loss:1.202 at 31
+04/18 16:08:23:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:08:23:  ---------
+04/18 16:08:48:  #RES: f1:72.613, precision:72.613, recall:72.613, loss:1.214 at 33
+04/18 16:08:48:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:08:48:  ---------
+04/18 16:09:13:  #RES: f1:71.938, precision:71.938, recall:71.938, loss:1.354 at 35
+04/18 16:09:14:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:09:14:  ---------
+04/18 16:09:39:  #RES: f1:71.745, precision:71.745, recall:71.745, loss:1.194 at 37
+04/18 16:09:39:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:09:39:  ---------
+04/18 16:10:04:  #RES: f1:72.613, precision:72.613, recall:72.613, loss:1.395 at 39
+04/18 16:10:04:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:10:04:  ---------
+04/18 16:10:29:  #RES: f1:70.492, precision:70.492, recall:70.492, loss:1.171 at 41
+04/18 16:10:29:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:10:29:  ---------
+04/18 16:10:55:  #RES: f1:72.228, precision:72.228, recall:72.228, loss:1.394 at 43
+04/18 16:10:55:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:10:55:  ---------
+04/18 16:11:20:  #RES: f1:71.070, precision:71.070, recall:71.070, loss:1.384 at 45
+04/18 16:11:20:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:11:20:  ---------
+04/18 16:11:45:  #RES: f1:70.781, precision:70.781, recall:70.781, loss:1.377 at 47
+04/18 16:11:45:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:11:45:  ---------
+04/18 16:12:11:  #RES: f1:70.685, precision:70.685, recall:70.685, loss:1.363 at 49
+04/18 16:12:11:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:12:11:  ---------
+04/18 16:12:36:  #RES: f1:71.938, precision:71.938, recall:71.938, loss:1.354 at 51
+04/18 16:12:36:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:12:36:  ---------
+04/18 16:13:01:  #RES: f1:71.263, precision:71.263, recall:71.263, loss:1.450 at 53
+04/18 16:13:01:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:13:01:  ---------
+04/18 16:13:27:  #RES: f1:72.035, precision:72.035, recall:72.035, loss:1.408 at 55
+04/18 16:13:27:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:13:27:  ---------
+04/18 16:13:52:  #RES: f1:72.131, precision:72.131, recall:72.131, loss:1.336 at 57
+04/18 16:13:52:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:13:52:  ---------
+04/18 16:14:17:  #RES: f1:72.131, precision:72.131, recall:72.131, loss:1.418 at 59
+04/18 16:14:17:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:14:17:  ---------
+04/18 16:14:43:  #RES: f1:73.385, precision:73.385, recall:73.385, loss:1.403 at 61
+04/18 16:14:43:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:14:43:  ---------
+04/18 16:15:08:  #RES: f1:72.613, precision:72.613, recall:72.613, loss:1.408 at 63
+04/18 16:15:08:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:15:08:  ---------
+04/18 16:15:33:  #RES: f1:71.553, precision:71.553, recall:71.553, loss:1.405 at 65
+04/18 16:15:33:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:15:33:  ---------
+04/18 16:15:59:  #RES: f1:72.228, precision:72.228, recall:72.228, loss:1.344 at 67
+04/18 16:15:59:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:15:59:  ---------
+04/18 16:16:24:  #RES: f1:72.035, precision:72.035, recall:72.035, loss:1.521 at 69
+04/18 16:16:24:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:16:24:  ---------
+04/18 16:16:49:  #RES: f1:71.938, precision:71.938, recall:71.938, loss:1.385 at 71
+04/18 16:16:49:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:16:49:  ---------
+04/18 16:17:15:  #RES: f1:71.745, precision:71.745, recall:71.745, loss:1.293 at 73
+04/18 16:17:15:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:17:15:  ---------
+04/18 16:17:40:  #RES: f1:71.842, precision:71.842, recall:71.842, loss:1.397 at 75
+04/18 16:17:40:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:17:40:  ---------
+04/18 16:18:06:  #RES: f1:72.903, precision:72.903, recall:72.903, loss:1.410 at 77
+04/18 16:18:06:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:18:06:  ---------
+04/18 16:18:31:  #RES: f1:72.517, precision:72.517, recall:72.517, loss:1.387 at 79
+04/18 16:18:31:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:18:31:  ---------
+04/18 16:18:56:  #RES: f1:71.938, precision:71.938, recall:71.938, loss:1.360 at 81
+04/18 16:18:56:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:18:56:  ---------
+04/18 16:19:22:  #RES: f1:72.517, precision:72.517, recall:72.517, loss:1.383 at 83
+04/18 16:19:22:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:19:22:  ---------
+04/18 16:19:47:  #RES: f1:71.842, precision:71.842, recall:71.842, loss:1.451 at 85
+04/18 16:19:47:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:19:47:  ---------
+04/18 16:20:13:  #RES: f1:71.745, precision:71.745, recall:71.745, loss:1.512 at 87
+04/18 16:20:13:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:20:13:  ---------
+04/18 16:20:38:  #RES: f1:72.228, precision:72.228, recall:72.228, loss:1.462 at 89
+04/18 16:20:38:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:20:38:  ---------
+04/18 16:21:03:  #RES: f1:71.553, precision:71.553, recall:71.553, loss:1.477 at 91
+04/18 16:21:03:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:21:03:  ---------
+04/18 16:21:29:  #RES: f1:72.324, precision:72.324, recall:72.324, loss:1.458 at 93
+04/18 16:21:29:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:21:29:  ---------
+04/18 16:21:54:  #RES: f1:72.420, precision:72.420, recall:72.420, loss:1.430 at 95
+04/18 16:21:54:  Best: f1:73.674, precision:73.674, recall:73.674, loss:1.177 at 25
+04/18 16:21:54:  ---------

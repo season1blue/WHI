@@ -142,6 +142,7 @@ class TrainInputProcess:
                 tokenized_inputs["aspect_ids"] = tokenized_aspect["input_ids"]
                 tokenized_inputs["aspect_masks"] = tokenized_aspect["attention_mask"]
 
+            # tokenized_inputs["aspect"] = aspect_l
             tokenized_inputs["sentiment"] = torch.tensor(sentiment_l)
             
             pixel_values, image_features = [], []

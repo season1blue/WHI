@@ -156,7 +156,7 @@ class aspect_dataset(Dataset):
         self.tokenizer = AutoTokenizer.from_pretrained(self.args.name_path_dict[self.args.text_model_name],add_prefix_space=True)  # text tokenizer
         self.processor = AutoProcessor.from_pretrained(self.args.name_path_dict[self.args.image_model_name])
 
-        self.raw_data, self.pairs = self.process_data(refresh_data=False)
+        self.raw_data, self.pairs, self.sentence = self.process_data(self.args.refresh_aspect)
 
     def __len__(self):
         return len(self.raw_data["input_ids"])
@@ -281,6 +281,7 @@ class aspect_dataset(Dataset):
     def process_data(self, refresh_data=True):
         file_name = self.file_type + ".pt"
         inputs_dir = os.path.join(self.args.cache_dir, self.args.dataset_type, file_name)
+        sentence_l, image_l, label_l, pair_l, senti_l, allabel_l = self._get_data(self.file)
         
         if os.path.exists(inputs_dir) and not refresh_data:
             print("Loading data from save file")
@@ -288,7 +289,6 @@ class aspect_dataset(Dataset):
             t = data.word_ids
         else:
             print("reprocessing the data")
-            sentence_l, image_l, label_l, pair_l, senti_l, allabel_l = self._get_data(self.file)
             tokenized_inputs = self.tokenize_data(sentence_l, image_l, label_l, pair_l, senti_l, allabel_l)
             data = tokenized_inputs
             torch.save(data, inputs_dir)
@@ -299,7 +299,7 @@ class aspect_dataset(Dataset):
             if k in data.keys():
                 del data[k]
 
-        return data, pairs
+        return data, pairs, sentence_l
 
    
 
@@ -432,6 +432,7 @@ class aspect_method():
         dataloader = DataLoader(data, batch_size=self.args.batch_size)
         checkpoint_path = os.path.join(self.args.cache_dir, "predict.pt")
 
+
         if os.path.exists(checkpoint_path):
             print(checkpoint_path, "exists, loading")
             text_config, image_config = model_select(self.args)
@@ -444,5 +445,22 @@ class aspect_method():
             print(checkpoint_path, "is not exists")
             apsect_predict_model = self.train()
             _, aspect = self.evaluate(self.args, apsect_predict_model, dataloader, data.raw_data, data.pairs)
+
+        # print(len(aspect))
+        # print(len(data.sentence))
+        
+        # text_aspect = deepcopy(aspect)
+        # for i, a in enumerate(aspect):
+        #     print(i)
+        #     print(a)
+        #     print(data.sentence[i])
+        #     text_aspect[i] = [data.sentence[i][
+        #         max(0, t[0]) : min(len(data.sentence[i]), t[1]+1)
+        #         ] 
+        #         for t in a]
+        #     print(text_aspect[i])
+        #     exit()
+        
+
 
         return aspect
