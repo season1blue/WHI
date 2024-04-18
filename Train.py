@@ -50,7 +50,7 @@ logger.addHandler(ch)
 # data_input_file = os.path.join("data/", args.dataset_type, file_name)
 
 file_name = 'input_' + args.text_model_name + "_" + args.image_model_name + '.pt'
-file_path = os.path.join("data/", args.dataset_type, file_name)
+file_path = os.path.join(args.cache_dir, args.dataset_type, file_name)
 print(file_path)
 refresh = False
 if not os.path.exists(file_path) or refresh:
@@ -58,6 +58,12 @@ if not os.path.exists(file_path) or refresh:
     prepare_data(args, file_path=file_path)
     
 data_inputs = torch.load(file_path)
+
+from aspect.aspect_method import aspect_method
+# Aspect
+aspect_predictor = aspect_method(args=args)
+train_aspect = aspect_predictor.predict("train")
+dev_aspect = aspect_predictor.predict("dev")
 
 
 

@@ -21,6 +21,9 @@ from transformers import CLIPTextConfig, CLIPVisionConfig
 def parse_arg():
     parser = argparse.ArgumentParser()
 
+    
+    parser.add_argument('--aspect_epochs', type=int, default=10)
+    
     parser.add_argument('--dataset_type', type=str, default='2015', nargs='?', help='display a string')
     parser.add_argument('--task_name', type=str, default='dualc', nargs='?', help='display a string')
     parser.add_argument('--batch_size', type=int, default=4, nargs='?', help='display an integer')
@@ -67,6 +70,9 @@ def parse_arg():
         "laion":    "laion/CLIP-ViT-bigG-14-laion2B-39B-b160k"
     }
     
+    args.data_text_dir = '../data/twitter' + args.dataset_type
+    args.data_image_dir = '../data/ImgData/twitter' + args.dataset_type
+    args.cache_dir = 'cache'
     
     return args
 

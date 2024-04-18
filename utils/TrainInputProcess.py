@@ -197,15 +197,14 @@ class TrainInputProcess:
 
 
 def prepare_data(args, file_path, text_model_name="clip", image_model_name="clip", dataset_type=2015):
-    data_text_dir = '../data/twitter' + args.dataset_type
-    data_image_dir = '../data/ImgData/twitter' + args.dataset_type
+    
     tip = TrainInputProcess(
                             args,
                             args.text_model_name,
                             args.image_model_name,
                             args.dataset_type,
-                            data_text_dir=data_text_dir,
-                            data_image_dir=data_image_dir,
+                            data_text_dir=args.data_text_dir,
+                            data_image_dir=args.data_image_dir,
                             )
     
     # finetune

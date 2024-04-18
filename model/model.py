@@ -581,9 +581,9 @@ class GANModel(nn.Module):
 
         image_feature = self.image_linear(image_feature[:, 0])
         text_feature = text_feature[:, 0]
-        aspect_feature = aspect_feature[:, 0]
+        # aspect_feature = aspect_feature[:, 0]
         
-        fusion = text_feature + aspect_feature
+        fusion = text_feature 
 
 
         sequence_output1 = self.dropout(fusion)
