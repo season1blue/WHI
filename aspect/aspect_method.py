@@ -283,6 +283,8 @@ class aspect_dataset(Dataset):
         inputs_dir = os.path.join(self.args.cache_dir, self.args.dataset_type, file_name)
         sentence_l, image_l, label_l, pair_l, senti_l, allabel_l = self._get_data(self.file)
         
+        print(refresh_data)
+        exit()
         if os.path.exists(inputs_dir) and not refresh_data:
             print("Loading data from save file")
             data = torch.load(inputs_dir)

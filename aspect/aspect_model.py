@@ -89,20 +89,21 @@ class ASPModel(nn.Module):
         text_loss = self.loss_fct(text_token_logits.view(-1, self.text_num_labels), labels.view(-1))
 
         #  * vision-aware text # cross_crf_loss
-        image_text_cross_attention, _ = self.image_text_cross(text_last_hidden_states, image_last_hidden_states, image_last_hidden_states)
-        cross_logits = self.classifier0(image_text_cross_attention)
-        mask = (labels != -100)
-        mask[:, 0] = 1
-        cross_crf_loss = -self.CRF(cross_logits, cross_labels, mask=mask) / 10
+        # image_text_cross_attention, _ = self.image_text_cross(text_last_hidden_states, image_last_hidden_states, image_last_hidden_states)
+        # cross_logits = self.classifier0(image_text_cross_attention)
+        # mask = (labels != -100)
+        # mask[:, 0] = 1
+        # cross_crf_loss = -self.CRF(cross_logits, cross_labels, mask=mask) / 10
 
-        # * token-patch matching # word patch align loss
-        batch_size, image_len, _ = image_last_hidden_states.shape
-        text_pad = (attention_mask == 1).clone().detach()
-        image_pad = torch.zeros(batch_size, image_len, dtype=torch.bool, device=attention_mask.device)
-        ot_dist = optimal_transport_dist(text_last_hidden_states, image_last_hidden_states, text_pad, image_pad)
-        word_region_align_loss = ot_dist.mean()
+        # # * token-patch matching # word patch align loss
+        # batch_size, image_len, _ = image_last_hidden_states.shape
+        # text_pad = (attention_mask == 1).clone().detach()
+        # image_pad = torch.zeros(batch_size, image_len, dtype=torch.bool, device=attention_mask.device)
+        # ot_dist = optimal_transport_dist(text_last_hidden_states, image_last_hidden_states, text_pad, image_pad)
+        # word_region_align_loss = ot_dist.mean()
 
-        loss = self.alpha * text_loss + cross_crf_loss  + self.beta * word_region_align_loss   #27
+        # loss = self.alpha * text_loss + cross_crf_loss  + self.beta * word_region_align_loss   #27
+        loss = text_loss
 
 
         return {"loss": loss, "logits": text_token_logits, "cross_logits": cross_logits, }
