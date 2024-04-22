@@ -58,29 +58,33 @@ if not os.path.exists(file_path) or args.refresh_data:
     
 data_inputs = torch.load(file_path)
 
-# from aspect.aspect_method import aspect_method
-# # Aspect
-# aspect_predictor = aspect_method(args=args)
-# train_aspect = aspect_predictor.predict("train")
-# dev_aspect = aspect_predictor.predict("dev")
+from aspect.aspect_method import aspect_method
+# Aspect
+aspect_predictor            = aspect_method(args=args)
+train_aspect, train_pairs   = aspect_predictor.predict("train")
+test_aspect, test_pairs     = aspect_predictor.predict("test")
+
+# TODO
+# print(data_inputs["train"].keys())  # dict_keys(['input_ids', 'token_type_ids', 'attention_mask', 'aspect_ids', 'aspect_masks', 'sentiment', 'pixel_values', 'image_feature'])
+train_data, train_pairs = aspect_predictor.prepare_data(train_aspect, train_pairs, "train")
+test_data, test_pairs = aspect_predictor.prepare_data(test_aspect, test_pairs, "test")
 
 
+
+# build label according aspect prediction
+ 
 # print(sum([len(d) for d in dev_aspect]))  #1105  预测的aspect数量
 # print(len(data_inputs["dev"]["aspect"]))  # 1122   # 实际的aspect数量，这是一一对应的
 
 
-# test_pairs = data_inputs["test"]["pairs"]
 test_sentiment = data_inputs["test"]["sentiment"]
-# data_inputs["train"].pop("pairs")
-# data_inputs["dev"].pop("pairs")
-# data_inputs["test"].pop("pairs")
 
-train_dataset = MyDataSet2(inputs=data_inputs["train"])
-dev_dataset = MyDataSet2(inputs=data_inputs["dev"])
-test_dataset = MyDataSet2(inputs=data_inputs["test"])
+train_dataset   = MyDataSet2(inputs=data_inputs["train"])
+# dev_dataset     = MyDataSet2(inputs=data_inputs["dev"])
+test_dataset    = MyDataSet2(inputs=data_inputs["test"])
 
 train_dataloader    = DataLoader(train_dataset, batch_size=args.batch_size)
-dev_dataloader      = DataLoader(dev_dataset, batch_size=args.batch_size)
+# dev_dataloader      = DataLoader(dev_dataset, batch_size=args.batch_size)
 test_dataloader     = DataLoader(test_dataset, batch_size=args.batch_size)
 
 

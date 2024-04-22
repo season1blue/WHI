@@ -18,6 +18,7 @@ from transformers import (WEIGHTS_NAME, AdamW, get_linear_schedule_with_warmup)
 from torch.utils.data import DataLoader
 from utils.utils import model_select
 from copy import deepcopy
+from fuzzywuzzy import fuzz
 
 
 def logits2span_bk(p_pred_labels, text_inputs, p_pairs):
@@ -279,22 +280,19 @@ class aspect_dataset(Dataset):
         return tokenized_inputs
 
     def process_data(self, refresh_data=True):
-        file_name = self.file_type + ".pt"
+        file_name = self.file_type + "aspect.pt"
         inputs_dir = os.path.join(self.args.cache_dir, self.args.dataset_type, file_name)
         sentence_l, image_l, label_l, pair_l, senti_l, allabel_l = self._get_data(self.file)
         
-        print(refresh_data)
-        exit()
+        
         if os.path.exists(inputs_dir) and not refresh_data:
             print("Loading data from save file")
             data = torch.load(inputs_dir)
-            t = data.word_ids
         else:
             print("reprocessing the data")
             tokenized_inputs = self.tokenize_data(sentence_l, image_l, label_l, pair_l, senti_l, allabel_l)
             data = tokenized_inputs
             torch.save(data, inputs_dir)
-            t = data.word_ids
         
         pairs = deepcopy(data["pairs"])
         for k in ["token_type_ids", "pairs", "senti_labels", "all_labels"]:
@@ -312,9 +310,7 @@ class aspect_method():
         self.args = args
         # Prepare data
         self.train_data = aspect_dataset(os.path.join(self.args.data_text_dir, "train.txt"), self.args)
-        self.dev_data = aspect_dataset(os.path.join(self.args.data_text_dir, "dev.txt"), self.args)
-        # train_pairs = train_data.pairs
-        # dev_pairs = dev_data.pairs
+        self.test_data = aspect_dataset(os.path.join(self.args.data_text_dir, "test.txt"), self.args)
         
 
 
@@ -357,7 +353,7 @@ class aspect_method():
 
     def train(self):
         train_dataloader = DataLoader(self.train_data, batch_size=self.args.batch_size)
-        dev_dataloader = DataLoader(self.dev_data, batch_size=self.args.batch_size)
+        test_dataloader = DataLoader(self.test_data, batch_size=self.args.batch_size)
 
         # Load Model
         text_config, image_config = model_select(self.args)
@@ -413,7 +409,7 @@ class aspect_method():
                     global_step += 1
 
             # Evaluate on every epoch end 
-            results, _ = self.evaluate(self.args, model, dev_dataloader, self.dev_data.raw_data, self.dev_data.pairs)
+            results, _ = self.evaluate(self.args, model, test_dataloader, self.test_data.raw_data, self.test_data.pairs)
             if results["aspect_f1"] >= best_result["aspect_f1"]:
                 best_result = results
                 best_model = model
@@ -429,17 +425,16 @@ class aspect_method():
 
         return best_model
 
-    def predict(self, type="train"):
-        data = self.train_data if type == "train" else self.dev_data
+    def predict(self, data_type="train"):
+        data = self.train_data if data_type == "train" else self.test_data
         dataloader = DataLoader(data, batch_size=self.args.batch_size)
         checkpoint_path = os.path.join(self.args.cache_dir, "predict.pt")
 
 
-        if os.path.exists(checkpoint_path):
+        if os.path.exists(checkpoint_path) and not self.args.refresh_aspect:
             print(checkpoint_path, "exists, loading")
-            text_config, image_config = model_select(self.args)
-            apsect_predict_model = ASPModel(self.args, text_config, image_config, text_num_labels=3, alpha=self.args.alpha, beta=self.args.beta)
-            
+            # text_config, image_config = model_select(self.args)
+            # apsect_predict_model = ASPModel(self.args, text_config, image_config, text_num_labels=3, alpha=self.args.alpha, beta=self.args.beta)
             apsect_predict_model = torch.load(checkpoint_path)
             _, aspect = self.evaluate(self.args, apsect_predict_model, dataloader, data.raw_data, data.pairs)
             
@@ -448,21 +443,69 @@ class aspect_method():
             apsect_predict_model = self.train()
             _, aspect = self.evaluate(self.args, apsect_predict_model, dataloader, data.raw_data, data.pairs)
 
-        # print(len(aspect))
-        # print(len(data.sentence))
-        
-        # text_aspect = deepcopy(aspect)
-        # for i, a in enumerate(aspect):
-        #     print(i)
-        #     print(a)
-        #     print(data.sentence[i])
-        #     text_aspect[i] = [data.sentence[i][
-        #         max(0, t[0]) : min(len(data.sentence[i]), t[1]+1)
-        #         ] 
-        #         for t in a]
-        #     print(text_aspect[i])
-        #     exit()
-        
+        text_aspect = deepcopy(aspect)
+        for i, a in enumerate(aspect):
+            text_aspect[i] = [data.sentence[i][
+                max(0, t[0]) : min(len(data.sentence[i]), t[1]+1)
+                ] 
+                for t in a]
+            # print(i)
+            # print(a)
+            # print(data.sentence[i])
+            # print(data.pairs[i])
+            # print(text_aspect[i])
 
 
-        return aspect
+        return text_aspect, data.pairs
+    
+    def prepare_data(self, predict_aspect, true_aspect, data_type="train"):
+        data = self.train_data if data_type=="train" else self.test_data
+        
+        new_data = {key: [] for key in data.raw_data.keys()}
+        new_data["sentiment"] = []
+        # print(data.raw_data.keys())  # ['input_ids', 'attention_mask', 'labels', 'cross_labels', 'pixel_values']
+        for i, p_aspect in enumerate(predict_aspect):
+            # sliced_data = data.raw_data["input_ids"]
+            t_aspect = true_aspect[i]
+            new_pairs = []
+            # 没预测出，预测的列表是空的
+            if len(p_aspect)==0:
+                new_pairs.append(('[SEP]', t_aspect[0][2])) # 将真实预测的第一个pair中的第三个位置（情感）赋值给整个句子
+            
+            for j, pa in enumerate(p_aspect):
+                sliced_aspect = " ".join(pa)
+                max_similarity = 0
+                max_value = None
+                
+                for item in t_aspect:
+                    # 计算目标与数据中的第二个元素的相似度
+                    similarity = fuzz.partial_ratio(sliced_aspect.lower(), item[1].lower())
+                    # 如果相似度高于当前最高相似度，则更新最高相似度和对应的值
+                    if similarity > max_similarity:
+                        max_similarity = similarity
+                        max_value = item[2]
+                
+                # 相似度太低的话，就过不了上面的if判断，所以max_value为None
+                # if max_value is None:
+                #     print("ttt", t_aspect, "ppp", sliced_aspect, "m", max_similarity)
+                
+                if max_similarity > 80:  # 相似度较高
+                    new_pairs.append((sliced_aspect, max_value))
+
+            # print(t_aspect)  # 真实aspect
+            # print(p_aspect)  # 预测aspect
+            
+            # TODO aspect 编码
+            # 包含两种情况，预测表里为空， 以及非空
+            for p in new_pairs:
+                # Duplicate the input_ids, masks and etc. for every pair
+                new_data["sentiment"].append(torch.tensor(p[1]).unsqueeze(0))
+                for key in data.raw_data.keys():
+                    new_data[key].append(data.raw_data[key][i].unsqueeze(0))    # Need to Check  ! Check Pass!
+
+        
+        # 合并new_data
+        for key, value in new_data.items():
+            new_data[key] = torch.cat(value, dim=0)
+        
+        return new_data, new_pairs

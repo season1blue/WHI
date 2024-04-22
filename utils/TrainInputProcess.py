@@ -55,30 +55,6 @@ class TrainInputProcess:
         self.data_dict = dict()
         self.input = dict()
         
-        # if self.text_model_name == 'bert':
-        #     self.tokenizer = AutoTokenizer.from_pretrained("../../_weight/deberta")
-        #     self.tokenizer.add_special_tokens({'pad_token': '[PAD]'})
-        # elif self.text_model_name == 'roberta':
-        #     self.tokenizer = AutoTokenizer.from_pretrained("../_weight/roberta-base", add_prefix_space=True)
-        # elif self.text_model_name == 'flant5':
-        #     self.tokenizer = AutoTokenizer.from_pretrained("./data/models/flant5", add_prefix_space=True)
-        # elif self.text_model_name == "deberta":
-        #     self.tokenizer = AutoTokenizer.from_pretrained("../_weight/deberta", add_prefix_space=True)
-        # elif self.text_model_name == "gpt2":
-        #     self.tokenizer = AutoTokenizer.from_pretrained("./data/models/gpt2", add_prefix_space=True)
-        #     self.tokenizer.add_special_tokens({'pad_token': '[PAD]'})
-        # elif self.text_model_name == "bart":
-        #     self.tokenizer = AutoTokenizer.from_pretrained("./data/models/bart", add_prefix_space=True)
-        # elif self.text_model_name == "clip":
-        #     self.tokenizer = AutoTokenizer.from_pretrained("openai/clip-vit-base-patch32")
-        
-
-        # text_config = AutoConfig.from_pretrained("../_weight/deberta")
-        # image_config = AutoConfig.from_pretrained("../_weight/vit-base-patch16-224-in21k")
-        # self.roberta = RobertaModel(text_config, add_pooling_layer=False)
-        # self.roberta.cuda()
-        # self.vit = ViTModel(image_config)
-        # self.vit.cuda()
         
         self.tokenizer = AutoTokenizer.from_pretrained(self.args.name_path_dict[self.text_model_name],add_prefix_space=True)  # text tokenizer
         self.processor = AutoProcessor.from_pretrained(self.args.name_path_dict[self.image_model_name])   #image processor
@@ -197,7 +173,7 @@ class TrainInputProcess:
 
 
 
-def prepare_data(args, file_path, text_model_name="clip", image_model_name="clip", dataset_type=2015):
+def prepare_data(args, file_path):
     
     tip = TrainInputProcess(
                             args,

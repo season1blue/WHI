@@ -106,7 +106,7 @@ class ASPModel(nn.Module):
         loss = text_loss
 
 
-        return {"loss": loss, "logits": text_token_logits, "cross_logits": cross_logits, }
+        return {"loss": loss, "logits": text_token_logits, "cross_logits": text_token_logits, }
         # text_token_logits         4, 60, 5
 
 
