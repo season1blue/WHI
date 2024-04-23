@@ -64,12 +64,18 @@ aspect_predictor            = aspect_method(args=args)
 train_aspect, train_pairs   = aspect_predictor.predict("train")
 test_aspect, test_pairs     = aspect_predictor.predict("test")
 
-# TODO
 # print(data_inputs["train"].keys())  # dict_keys(['input_ids', 'token_type_ids', 'attention_mask', 'aspect_ids', 'aspect_masks', 'sentiment', 'pixel_values', 'image_feature'])
 train_data, train_pairs = aspect_predictor.prepare_data(train_aspect, train_pairs, "train")
 test_data, test_pairs = aspect_predictor.prepare_data(test_aspect, test_pairs, "test")
 
-
+# print(data_inputs["train"].keys())
+# print(train_data.keys())
+# for key, value in data_inputs["train"].items():
+#     print(key, value.size())
+# print("-----")
+# for key, value in train_data.items():
+#     print(key, value.size())
+# exit()
 
 # build label according aspect prediction
  

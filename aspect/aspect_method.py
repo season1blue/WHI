@@ -19,7 +19,8 @@ from torch.utils.data import DataLoader
 from utils.utils import model_select
 from copy import deepcopy
 from fuzzywuzzy import fuzz
-
+from transformers import AutoModel
+from transformers import CLIPVisionModel
 
 def logits2span_bk(p_pred_labels, text_inputs, p_pairs):
     pred_pair_list = []
@@ -156,8 +157,14 @@ class aspect_dataset(Dataset):
 
         self.tokenizer = AutoTokenizer.from_pretrained(self.args.name_path_dict[self.args.text_model_name],add_prefix_space=True)  # text tokenizer
         self.processor = AutoProcessor.from_pretrained(self.args.name_path_dict[self.args.image_model_name])
+        
+        self.image_model = AutoModel.from_pretrained(args.name_path_dict[args.image_model_name]).to(args.device)
+        if args.image_model_name == "clip" or "laion":
+            self.image_model = CLIPVisionModel.from_pretrained(args.name_path_dict[args.image_model_name]).to(args.device)
 
         self.raw_data, self.pairs, self.sentence = self.process_data(self.args.refresh_aspect)
+
+
 
     def __len__(self):
         return len(self.raw_data["input_ids"])
@@ -224,21 +231,41 @@ class aspect_dataset(Dataset):
         return sentence_l, image_l, label_l, pair_l, senti_l, allabel_l
     
     def tokenize_data(self, sentence_l, image_l, label_l, pair_l, senti_l, allabel_l):
-        images = []
         
-        for image_path in tqdm(image_l, desc="aspect image"):
-            img_path = os.path.join(self.args.data_image_dir, image_path)
-            image = Image.open(img_path)
-            image = image.convert('RGB')
-            images.append(image)
-
-        
-        pixel_values = self.processor(images=images,return_tensors="pt")["pixel_values"]
         new_sentence_l = []
         for sentence in sentence_l:
             new_sentence_l.append(" ".join(sentence))
 
         tokenized_inputs = self.tokenizer(sentence_l, truncation=True, is_split_into_words=True, padding='max_length', max_length=60, return_tensors='pt')
+
+
+
+        # images = []
+        
+        # for image_path in tqdm(image_l, desc="aspect image"):
+        #     img_path = os.path.join(self.args.data_image_dir, image_path)
+        #     image = Image.open(img_path)
+        #     image = image.convert('RGB')
+        #     images.append(image)
+        # 图像处理和编码
+        # pixel_values = self.processor(images=images,return_tensors="pt")["pixel_values"]
+        # tokenized_inputs["pixel_values"] = pixel_values
+        pixel_values, image_features = [], []
+        with torch.no_grad():
+            # 基本图像和sentence进行tokenize处理
+            for image_path in tqdm(image_l, desc="image in aspect method"):
+                image_file_path = os.path.join(self.args.data_image_dir, image_path)
+                image = Image.open(image_file_path).convert('RGB')
+
+                inputs = self.processor(images=image, return_tensors="pt").to(self.args.device)
+                pixel_values.append(inputs["pixel_values"])
+                outputs = self.image_model(**inputs)
+                image_feature = torch.squeeze(outputs.last_hidden_state, 1)
+                image_features.append(image_feature) 
+        
+        tokenized_inputs["pixel_values"] = torch.cat(pixel_values, dim=0)
+        tokenized_inputs["image_feature"] = torch.cat(image_features, dim=0)
+        
 
         text_labels, cross_labels, senti_labels, all_labels = [], [], [], []
         for i, label in enumerate(label_l):
@@ -275,7 +302,6 @@ class aspect_dataset(Dataset):
         tokenized_inputs["cross_labels"] = torch.tensor(cross_labels)
         tokenized_inputs["senti_labels"] = torch.tensor(senti_labels)
         tokenized_inputs["all_labels"] = torch.tensor(all_labels)
-        tokenized_inputs["pixel_values"] = pixel_values
 
         return tokenized_inputs
 
@@ -312,8 +338,8 @@ class aspect_method():
         self.train_data = aspect_dataset(os.path.join(self.args.data_text_dir, "train.txt"), self.args)
         self.test_data = aspect_dataset(os.path.join(self.args.data_text_dir, "test.txt"), self.args)
         
-
-
+        self.tokenizer = AutoTokenizer.from_pretrained(self.args.name_path_dict[self.args.text_model_name],add_prefix_space=True)  # text tokenizer
+        
     def evaluate(self, args, model, eval_dataloader, text_inputs, pairs):
         eval_loss, nb_eval_steps = 0.0, 0
         model.to(args.device)
@@ -463,6 +489,7 @@ class aspect_method():
         
         new_data = {key: [] for key in data.raw_data.keys()}
         new_data["sentiment"] = []
+        aspect_text = []
         # print(data.raw_data.keys())  # ['input_ids', 'attention_mask', 'labels', 'cross_labels', 'pixel_values']
         for i, p_aspect in enumerate(predict_aspect):
             # sliced_data = data.raw_data["input_ids"]
@@ -495,17 +522,27 @@ class aspect_method():
             # print(t_aspect)  # 真实aspect
             # print(p_aspect)  # 预测aspect
             
-            # TODO aspect 编码
             # 包含两种情况，预测表里为空， 以及非空
             for p in new_pairs:
                 # Duplicate the input_ids, masks and etc. for every pair
+                aspect_text.append([p[0]])
                 new_data["sentiment"].append(torch.tensor(p[1]).unsqueeze(0))
                 for key in data.raw_data.keys():
                     new_data[key].append(data.raw_data[key][i].unsqueeze(0))    # Need to Check  ! Check Pass!
 
-        
         # 合并new_data
         for key, value in new_data.items():
             new_data[key] = torch.cat(value, dim=0)
         
+        # aspect 编码
+        tokenized_aspect = self.tokenizer(aspect_text, truncation=True, is_split_into_words=True, padding='max_length', max_length=60, return_tensors='pt')
+        new_data["aspect_ids"] = tokenized_aspect["input_ids"]
+        new_data["aspect_mask"] = tokenized_aspect["attention_mask"]
+
+        # new_data keys dict_keys(['input_ids', 'attention_mask', 'pixel_values', 'image_feature', 'labels', 'cross_labels', 'sentiment', 'aspect_ids', 'aspect_mask'])
+        
+        # print(new_data.keys())
+        # for key, value in new_data.items():
+        #     print(key, value.size())
+        # exit()
         return new_data, new_pairs

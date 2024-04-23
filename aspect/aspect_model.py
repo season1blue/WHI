@@ -61,7 +61,7 @@ class ASPModel(nn.Module):
 
 
     def forward(self, input_ids, pixel_values,
-                attention_mask=None, labels=None, cross_labels=None, pairs=None
+                attention_mask=None, labels=None, cross_labels=None, pairs=None, image_feature=None,
             ):
 
 
