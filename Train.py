@@ -11,7 +11,7 @@ import logging
 from transformers import logging as log_ignore
 log_ignore.set_verbosity_error()
 
-from model.model import GANModel
+from model.model import SENModel
 from utils.MyDataSet import MyDataSet2
 from utils.metrics import cal_f1
 from utils.utils import set_random_seed, model_select, parse_arg
@@ -83,21 +83,19 @@ test_data, test_pairs = aspect_predictor.prepare_data(test_aspect, test_pairs, "
 # print(len(data_inputs["dev"]["aspect"]))  # 1122   # 实际的aspect数量，这是一一对应的
 
 
-test_sentiment = data_inputs["test"]["sentiment"]
 
-train_dataset   = MyDataSet2(inputs=data_inputs["train"])
+train_dataset    = MyDataSet2(inputs=train_data)
+train_dataloader = DataLoader(train_dataset, batch_size=args.batch_size)
+test_dataset     = MyDataSet2(inputs=test_data)
+test_dataloader  = DataLoader(test_dataset, batch_size=args.batch_size)
 # dev_dataset     = MyDataSet2(inputs=data_inputs["dev"])
-test_dataset    = MyDataSet2(inputs=data_inputs["test"])
-
-train_dataloader    = DataLoader(train_dataset, batch_size=args.batch_size)
 # dev_dataloader      = DataLoader(dev_dataset, batch_size=args.batch_size)
-test_dataloader     = DataLoader(test_dataset, batch_size=args.batch_size)
 
+test_sentiment = test_data["sentiment"]
 
 
 text_config, image_config = model_select(args)
-vb_model = GANModel(args, text_config, image_config, text_num_labels=5, text_model_name=args.text_model_name,
-                     image_model_name=args.image_model_name, alpha=args.alpha, beta=args.beta)
+vb_model = SENModel(args, text_config, image_config, text_model_name=args.text_model_name, image_model_name=args.image_model_name, alpha=args.alpha, beta=args.beta)
 
 vb_model.to(args.device)
 vb_model_dict = vb_model.state_dict()

@@ -27,6 +27,7 @@ def parse_arg():
     parser.add_argument('--dataset_type', type=str, default='2015', nargs='?', help='display a string')
     parser.add_argument('--task_name', type=str, default='dualc', nargs='?', help='display a string')
     parser.add_argument('--batch_size', type=int, default=4, nargs='?', help='display an integer')
+    parser.add_argument('--text_num_labels', type=int, default=3)
     parser.add_argument('--output_result_file', type=str, default="./result.txt", nargs='?', help='display a string')
     parser.add_argument('--output_dir', type=str, default="./results", nargs='?', help='display a string')
     parser.add_argument('--log_dir', type=str, default="./data/log.log")

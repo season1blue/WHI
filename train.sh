@@ -3,17 +3,17 @@
 
 #! /bin/bash
 python3 ./Train.py \
---epochs 100 \
+--epochs 400 \
 --save_steps 100 \
 --dataset_type 2015 \
---batch_size 64 \
+--batch_size 96 \
 --lr 2e-5 \
 --text_model_name "deberta" \
 --image_model_name "clip" \
 --output_dir /data/results \
 --output_result_file /data/result.txt \
 --log_dir log.log \
---device_id "cuda:0" \
+--device_id "cuda:3" \
 --enable_log \
 --only_text_loss \
 --add_gan \
