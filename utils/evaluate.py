@@ -1,10 +1,10 @@
 
-from utils.metrics import cal_f1, cal_sen_f1
+from utils.metrics import cal_f1, cal_pair_f1
 import torch 
 import numpy as np
 from sklearn.metrics import f1_score, precision_score, recall_score
 
-def evaluate(args, vb_model, eval_dataloader, text_inputs, sentiment):
+def evaluate(args, vb_model, eval_dataloader, test_paspect, sentiment, test_tpairs):
     eval_loss = 0.0
     nb_eval_steps = 0
     vb_model.to(args.device)
@@ -31,9 +31,12 @@ def evaluate(args, vb_model, eval_dataloader, text_inputs, sentiment):
     for array in text_pred_list:
         pred_result = np.concatenate((pred_result, array), axis=None)
     
-    f1          = f1_score(sentiment, pred_result, average='micro')
-    precision   = precision_score(sentiment, pred_result, average='micro')
-    recall      = recall_score(sentiment, pred_result, average='micro')    
+    
+    precision, recall, f1 = cal_pair_f1(pred_result, test_paspect, test_tpairs)
+    
+    # f1          = f1_score(sentiment, pred_result, average='micro')
+    # precision   = precision_score(sentiment, pred_result, average='micro')
+    # recall      = recall_score(sentiment, pred_result, average='micro')    
     
 
     # cross_precision, cross_recall, cross_f1 = cal_f1(cross_pred_sum, text_inputs, pairs)

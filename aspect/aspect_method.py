@@ -545,4 +545,4 @@ class aspect_method():
         # for key, value in new_data.items():
         #     print(key, value.size())
         # exit()
-        return new_data, new_pairs
+        return new_data, aspect_text

@@ -3,7 +3,7 @@
 
 #! /bin/bash
 python3 ./Train.py \
---epochs 400 \
+--epochs 100 \
 --save_steps 100 \
 --dataset_type 2015 \
 --batch_size 96 \
@@ -13,7 +13,7 @@ python3 ./Train.py \
 --output_dir /data/results \
 --output_result_file /data/result.txt \
 --log_dir log.log \
---device_id "cuda:3" \
+--device_id "cuda:0" \
 --enable_log \
 --only_text_loss \
 --add_gan \

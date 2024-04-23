@@ -53,31 +53,51 @@ def cal_f1(p_pred_labels, text_inputs, p_pairs, is_result=False):
     else:
         return precision * 100, recall * 100, f1 * 100
 
+from difflib import SequenceMatcher
+def count_similar_tuples(a, b):
+    # 初始化相似元组计数器
+    similar_count = 0
+    
+    # 遍历a中的每个元组
+    for a_tuple in a:
+        a_text, a_num = a_tuple
+        # 遍历b中的每个元组
+        for b_tuple in b:
+            b_text, b_num = b_tuple
+            # 如果文本相似且数字匹配
+            if SequenceMatcher(None, a_text, b_text).ratio() > 0.8 and a_num == b_num:
+                similar_count += 1
+                break  # 找到相似的就跳出内层循环，避免重复计数
+    
+    return similar_count
 
-
-def cal_sen_f1(text_pred_sum, text_inputs, sentiment_l, is_result=False):
+def cal_pair_f1(pred_result, pred_aspect, true_pairs):
     gold_num, predict_num, correct_num = 0, 0, 0
     pred_pair_list = []
     
-    gold_num = len(sentiment_l)
-    for i, pred in enumerate(text_pred_sum):
-        label = sentiment_l[i]
-        if pred == label :
-            correct_num += 1
-        
-        
-        true_pair = set(p_pairs[i])
-        gold_num += len(true_pair)
-        predict_num += len(list(pred_pair))
-        pred_pair_list.append(pred_pair.copy())
-        correct_num += len(true_pair & pred_pair)
-    precision, recall, f1 = 0, 0, 0
+    
+    pred_pairs = [ (aspect[0], int(sentiment)) for aspect, sentiment in zip(pred_aspect, pred_result)]
+    
+    
+    flatten_true_pairs = []
+    for pair in true_pairs:
+        for p in pair:
+            flatten_true_pairs.append(p)
+            
+    # print(len(pred_pairs))  # ('Meeks', 0)
+    # print(len(flatten_true_pairs))  #('8-8', 'Meeks', 1)
+
+    flatten_true_pairs = [(f[1], f[2]) for f in flatten_true_pairs]
+    
+    gold_num = len(flatten_true_pairs)
+    predict_num = len(pred_pairs)
+    correct_num = count_similar_tuples(pred_pairs, flatten_true_pairs)
 
     precision = correct_num / predict_num if predict_num != 0 else 0
     recall = correct_num / gold_num if gold_num != 0 else 0
     f1 = (2 * precision * recall) / (precision + recall) if precision != 0 or recall != 0 else 0
 
-    return precision * 100, recall * 100, f1 * 100
+    return precision, recall, f1
 
 
 

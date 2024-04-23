@@ -61,12 +61,12 @@ data_inputs = torch.load(file_path)
 from aspect.aspect_method import aspect_method
 # Aspect
 aspect_predictor            = aspect_method(args=args)
-train_aspect, train_pairs   = aspect_predictor.predict("train")
-test_aspect, test_pairs     = aspect_predictor.predict("test")
+train_aspect, train_tpairs   = aspect_predictor.predict("train")
+test_aspect, test_tpairs     = aspect_predictor.predict("test")
 
 # print(data_inputs["train"].keys())  # dict_keys(['input_ids', 'token_type_ids', 'attention_mask', 'aspect_ids', 'aspect_masks', 'sentiment', 'pixel_values', 'image_feature'])
-train_data, train_pairs = aspect_predictor.prepare_data(train_aspect, train_pairs, "train")
-test_data, test_pairs = aspect_predictor.prepare_data(test_aspect, test_pairs, "test")
+train_data, train_paspect = aspect_predictor.prepare_data(train_aspect, train_tpairs, "train")
+test_data, test_paspect = aspect_predictor.prepare_data(test_aspect, test_tpairs, "test")
 
 # print(data_inputs["train"].keys())
 # print(train_data.keys())
@@ -184,7 +184,7 @@ for epoch in range(epochs_trained, int(args.epochs)):
             # save model if args.save_steps>0
             if args.save_steps > 0 and global_step % args.save_steps == 0:
                 # Log metrics
-                results, _ = evaluate(args, vb_model, test_dataloader, data_inputs["test"], test_sentiment)
+                results, _ = evaluate(args, vb_model, test_dataloader, test_paspect, test_sentiment, test_tpairs)
                 if results["f1"] >= best_result["f1"]:
                     best_result = results
                     best_result["epoch"] = epoch
