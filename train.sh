@@ -6,7 +6,7 @@ python3 ./Train.py \
 --epochs 300 \
 --save_steps 100 \
 --dataset_type 2015 \
---batch_size 96 \
+--batch_size 64 \
 --lr 2e-5 \
 --text_model_name "deberta" \
 --image_model_name "clip" \

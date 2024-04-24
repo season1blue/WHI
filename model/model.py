@@ -132,11 +132,11 @@ class SENModel(nn.Module):
         text_feature = text_feature[:, 0]
         aspect_feature = aspect_feature[:, 0]
         
-        fusion = text_feature + aspect_feature
+        fusion = text_feature + aspect_feature + image_feature
 
 
         sequence_output1 = self.dropout(fusion)
-        text_token_logits = self.text_linear(sequence_output1)
+        fusion_logits = self.text_linear(sequence_output1)
 
         
         
@@ -145,7 +145,7 @@ class SENModel(nn.Module):
         # weights = torch.ones(labels.shape).to(labels.device)
         # text_loss = loss_fct(text_token_logits.view(-1, self.text_num_labels), labels.view(-1), weights)
         
-        text_loss = self.loss_fct(text_token_logits.view(-1, self.args.text_num_labels), sentiment.view(-1))
+        text_loss = self.loss_fct(fusion_logits.view(-1, self.args.text_num_labels), sentiment.view(-1))
         if self.args.only_text_loss :
             #  * vision-aware text # cross_crf_loss
             loss = text_loss 
@@ -169,5 +169,5 @@ class SENModel(nn.Module):
         if self.args.add_gan_loss:
             loss += cal_loss(output=encoder_outputs)
 
-        return {"loss": loss, "logits": text_token_logits, "cross_logits": None, }
+        return {"loss": loss, "logits": fusion_logits, "cross_logits": None, }
         # text_token_logits         4, 60, 5
