@@ -3,7 +3,7 @@
 
 #! /bin/bash
 python3 ./Train.py \
---epochs 100 \
+--epochs 300 \
 --save_steps 100 \
 --dataset_type 2015 \
 --batch_size 96 \

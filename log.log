@@ -5173,3 +5173,369 @@
 04/23 19:40:56:  #RES: f1:69.258, precision:71.649, recall:67.020, loss:1.669 at 38
 04/23 19:40:56:  Best: f1:70.852, precision:73.299, recall:68.563, loss:1.494 at 29
 04/23 19:40:56:  ---------
+04/23 19:43:05:  #RES: f1:68.062, precision:70.412, recall:65.863, loss:1.696 at 41
+04/23 19:43:05:  Best: f1:70.852, precision:73.299, recall:68.563, loss:1.494 at 29
+04/23 19:43:05:  ---------
+04/23 19:45:16:  #RES: f1:67.862, precision:70.206, recall:65.670, loss:1.694 at 44
+04/23 19:45:16:  Best: f1:70.852, precision:73.299, recall:68.563, loss:1.494 at 29
+04/23 19:45:16:  ---------
+04/23 19:47:25:  #RES: f1:69.457, precision:71.856, recall:67.213, loss:1.843 at 47
+04/23 19:47:25:  Best: f1:70.852, precision:73.299, recall:68.563, loss:1.494 at 29
+04/23 19:47:25:  ---------
+04/23 19:49:34:  #RES: f1:70.952, precision:73.402, recall:68.660, loss:1.983 at 50
+04/23 19:49:34:  Best: f1:70.952, precision:73.402, recall:68.660, loss:1.983 at 50
+04/23 19:49:34:  ---------
+04/23 19:51:44:  #RES: f1:70.852, precision:73.299, recall:68.563, loss:2.212 at 53
+04/23 19:51:44:  Best: f1:70.952, precision:73.402, recall:68.660, loss:1.983 at 50
+04/23 19:51:44:  ---------
+04/23 19:53:54:  #RES: f1:69.158, precision:71.546, recall:66.924, loss:2.088 at 56
+04/23 19:53:54:  Best: f1:70.952, precision:73.402, recall:68.660, loss:1.983 at 50
+04/23 19:53:54:  ---------
+04/23 19:56:03:  #RES: f1:70.154, precision:72.577, recall:67.888, loss:2.034 at 59
+04/23 19:56:03:  Best: f1:70.952, precision:73.402, recall:68.660, loss:1.983 at 50
+04/23 19:56:03:  ---------
+04/23 19:58:12:  #RES: f1:69.656, precision:72.062, recall:67.406, loss:2.086 at 62
+04/23 19:58:12:  Best: f1:70.952, precision:73.402, recall:68.660, loss:1.983 at 50
+04/23 19:58:12:  ---------
+04/23 20:00:21:  #RES: f1:69.856, precision:72.268, recall:67.599, loss:2.284 at 65
+04/23 20:00:21:  Best: f1:70.952, precision:73.402, recall:68.660, loss:1.983 at 50
+04/23 20:00:21:  ---------
+04/23 20:02:30:  #RES: f1:70.852, precision:73.299, recall:68.563, loss:2.234 at 68
+04/23 20:02:30:  Best: f1:70.952, precision:73.402, recall:68.660, loss:1.983 at 50
+04/23 20:02:30:  ---------
+04/23 20:04:39:  #RES: f1:70.752, precision:73.196, recall:68.467, loss:2.292 at 71
+04/23 20:04:39:  Best: f1:70.952, precision:73.402, recall:68.660, loss:1.983 at 50
+04/23 20:04:39:  ---------
+04/23 20:06:48:  #RES: f1:70.653, precision:73.093, recall:68.370, loss:2.349 at 73
+04/23 20:06:48:  Best: f1:70.952, precision:73.402, recall:68.660, loss:1.983 at 50
+04/23 20:06:48:  ---------
+04/23 20:08:58:  #RES: f1:70.254, precision:72.680, recall:67.985, loss:2.288 at 76
+04/23 20:08:58:  Best: f1:70.952, precision:73.402, recall:68.660, loss:1.983 at 50
+04/23 20:08:58:  ---------
+04/23 20:11:07:  #RES: f1:70.154, precision:72.577, recall:67.888, loss:2.222 at 79
+04/23 20:11:07:  Best: f1:70.952, precision:73.402, recall:68.660, loss:1.983 at 50
+04/23 20:11:07:  ---------
+04/23 20:13:17:  #RES: f1:69.856, precision:72.268, recall:67.599, loss:2.288 at 82
+04/23 20:13:17:  Best: f1:70.952, precision:73.402, recall:68.660, loss:1.983 at 50
+04/23 20:13:17:  ---------
+04/23 20:15:26:  #RES: f1:70.154, precision:72.577, recall:67.888, loss:2.365 at 85
+04/23 20:15:26:  Best: f1:70.952, precision:73.402, recall:68.660, loss:1.983 at 50
+04/23 20:15:26:  ---------
+04/23 20:17:35:  #RES: f1:70.553, precision:72.990, recall:68.274, loss:2.358 at 88
+04/23 20:17:35:  Best: f1:70.952, precision:73.402, recall:68.660, loss:1.983 at 50
+04/23 20:17:35:  ---------
+04/23 20:19:44:  #RES: f1:70.453, precision:72.887, recall:68.177, loss:2.367 at 91
+04/23 20:19:44:  Best: f1:70.952, precision:73.402, recall:68.660, loss:1.983 at 50
+04/23 20:19:44:  ---------
+04/23 20:21:54:  #RES: f1:70.453, precision:72.887, recall:68.177, loss:2.388 at 94
+04/23 20:21:54:  Best: f1:70.952, precision:73.402, recall:68.660, loss:1.983 at 50
+04/23 20:21:54:  ---------
+04/23 20:24:03:  #RES: f1:69.955, precision:72.371, recall:67.695, loss:2.392 at 97
+04/23 20:24:03:  Best: f1:70.952, precision:73.402, recall:68.660, loss:1.983 at 50
+04/23 20:24:03:  ---------
+04/23 20:40:08:  ======================== New Round =============================
+04/23 20:40:08:  2015, add_gan:True, add_gan_loss: False, add_gpt: False, text_model deberta
+04/23 20:40:08:  Namespace(adam_epsilon=1e-08, add_cycle=False, add_gan=True, add_gan_loss=False, add_gpt=False, add_llm=False, alpha=0.6, aspect_epochs=100, batch_size=96, beta=0.6, cache_dir='cache', data_image_dir='../data/ImgData/twitter2015', data_text_dir='../data/twitter2015', dataset_type='2015', device=device(type='cuda', index=0), device_id='cuda:0', enable_log=True, epochs=300, gradient_accumulation_steps=1, image_model_name='clip', log_dir='log.log', logging_steps=500, lr=2e-05, max_grad_norm=1.0, max_steps=-1, name_path_dict={'bert': '../_weight/deberta', 'roberta': '../_weight/roberta-base', 'deberta': '../_weight/deberta', 'clip': 'openai/clip-vit-base-patch32', 'robertat': 'cardiffnlp/twitter-roberta-base-sentiment-latest', 'vit': '../_weight/vit-base-patch16-224-in21k', 'xlm': 'xlm-roberta-base', 'debertal': 'microsoft/deberta-v3-large', 'laion': 'laion/CLIP-ViT-bigG-14-laion2B-39B-b160k'}, only_text_loss=True, output_dir='/data/results', output_result_file='/data/result.txt', random_seed=42, refresh_aspect=False, refresh_data=False, save_steps=100, task_name='dualc', text_model_name='deberta', text_num_labels=3, warmup_steps=100, weight_decay=0.01)
+04/23 20:42:17:  #RES: f1:67.464, precision:69.794, recall:65.284, loss:0.603 at 2
+04/23 20:42:17:  Best: f1:67.464, precision:69.794, recall:65.284, loss:0.603 at 2
+04/23 20:42:17:  ---------
+04/23 20:44:26:  #RES: f1:69.158, precision:71.546, recall:66.924, loss:0.694 at 5
+04/23 20:44:26:  Best: f1:69.158, precision:71.546, recall:66.924, loss:0.694 at 5
+04/23 20:44:26:  ---------
+04/23 20:46:36:  #RES: f1:69.158, precision:71.546, recall:66.924, loss:0.716 at 8
+04/23 20:46:36:  Best: f1:69.158, precision:71.546, recall:66.924, loss:0.716 at 8
+04/23 20:46:36:  ---------
+04/23 20:48:46:  #RES: f1:65.969, precision:68.247, recall:63.838, loss:1.093 at 11
+04/23 20:48:46:  Best: f1:69.158, precision:71.546, recall:66.924, loss:0.716 at 8
+04/23 20:48:46:  ---------
+04/23 20:50:55:  #RES: f1:69.258, precision:71.649, recall:67.020, loss:0.947 at 14
+04/23 20:50:55:  Best: f1:69.258, precision:71.649, recall:67.020, loss:0.947 at 14
+04/23 20:50:55:  ---------
+04/23 20:53:05:  #RES: f1:69.756, precision:72.165, recall:67.502, loss:0.995 at 17
+04/23 20:53:05:  Best: f1:69.756, precision:72.165, recall:67.502, loss:0.995 at 17
+04/23 20:53:05:  ---------
+04/23 20:55:15:  #RES: f1:69.557, precision:71.959, recall:67.310, loss:1.099 at 20
+04/23 20:55:15:  Best: f1:69.756, precision:72.165, recall:67.502, loss:0.995 at 17
+04/23 20:55:15:  ---------
+04/23 20:57:24:  #RES: f1:70.154, precision:72.577, recall:67.888, loss:1.245 at 23
+04/23 20:57:24:  Best: f1:70.154, precision:72.577, recall:67.888, loss:1.245 at 23
+04/23 20:57:24:  ---------
+04/23 20:59:33:  #RES: f1:70.254, precision:72.680, recall:67.985, loss:1.340 at 26
+04/23 20:59:33:  Best: f1:70.254, precision:72.680, recall:67.985, loss:1.340 at 26
+04/23 20:59:33:  ---------
+04/23 21:01:42:  #RES: f1:68.660, precision:71.031, recall:66.442, loss:1.423 at 29
+04/23 21:01:42:  Best: f1:70.254, precision:72.680, recall:67.985, loss:1.340 at 26
+04/23 21:01:42:  ---------
+04/23 21:03:53:  #RES: f1:68.959, precision:71.340, recall:66.731, loss:1.694 at 32
+04/23 21:03:53:  Best: f1:70.254, precision:72.680, recall:67.985, loss:1.340 at 26
+04/23 21:03:53:  ---------
+04/23 21:06:04:  #RES: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:06:04:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:06:04:  ---------
+04/23 21:08:13:  #RES: f1:70.354, precision:72.784, recall:68.081, loss:1.821 at 38
+04/23 21:08:13:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:08:13:  ---------
+04/23 21:10:23:  #RES: f1:68.161, precision:70.515, recall:65.959, loss:1.852 at 41
+04/23 21:10:23:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:10:23:  ---------
+04/23 21:12:33:  #RES: f1:70.354, precision:72.784, recall:68.081, loss:2.042 at 44
+04/23 21:12:33:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:12:33:  ---------
+04/23 21:14:43:  #RES: f1:70.154, precision:72.577, recall:67.888, loss:2.115 at 47
+04/23 21:14:43:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:14:43:  ---------
+04/23 21:16:52:  #RES: f1:69.258, precision:71.649, recall:67.020, loss:2.305 at 50
+04/23 21:16:52:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:16:52:  ---------
+04/23 21:19:01:  #RES: f1:70.453, precision:72.887, recall:68.177, loss:2.250 at 53
+04/23 21:19:01:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:19:01:  ---------
+04/23 21:21:12:  #RES: f1:69.656, precision:72.062, recall:67.406, loss:2.243 at 56
+04/23 21:21:12:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:21:12:  ---------
+04/23 21:23:21:  #RES: f1:70.653, precision:73.093, recall:68.370, loss:2.424 at 59
+04/23 21:23:21:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:23:21:  ---------
+04/23 21:25:30:  #RES: f1:70.254, precision:72.680, recall:67.985, loss:2.277 at 62
+04/23 21:25:30:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:25:30:  ---------
+04/23 21:27:39:  #RES: f1:69.856, precision:72.268, recall:67.599, loss:2.597 at 65
+04/23 21:27:39:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:27:39:  ---------
+04/23 21:29:48:  #RES: f1:70.453, precision:72.887, recall:68.177, loss:2.547 at 68
+04/23 21:29:48:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:29:48:  ---------
+04/23 21:31:57:  #RES: f1:69.457, precision:71.856, recall:67.213, loss:2.533 at 71
+04/23 21:31:57:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:31:57:  ---------
+04/23 21:34:06:  #RES: f1:69.058, precision:71.443, recall:66.827, loss:2.323 at 73
+04/23 21:34:06:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:34:06:  ---------
+04/23 21:36:17:  #RES: f1:69.058, precision:71.443, recall:66.827, loss:2.598 at 76
+04/23 21:36:17:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:36:17:  ---------
+04/23 21:38:26:  #RES: f1:70.055, precision:72.474, recall:67.792, loss:2.635 at 79
+04/23 21:38:26:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:38:26:  ---------
+04/23 21:40:36:  #RES: f1:69.258, precision:71.649, recall:67.020, loss:2.732 at 82
+04/23 21:40:36:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:40:36:  ---------
+04/23 21:42:46:  #RES: f1:69.856, precision:72.268, recall:67.599, loss:2.888 at 85
+04/23 21:42:46:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:42:46:  ---------
+04/23 21:44:55:  #RES: f1:68.660, precision:71.031, recall:66.442, loss:2.671 at 88
+04/23 21:44:55:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:44:55:  ---------
+04/23 21:47:04:  #RES: f1:68.959, precision:71.340, recall:66.731, loss:2.781 at 91
+04/23 21:47:04:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:47:04:  ---------
+04/23 21:49:14:  #RES: f1:69.856, precision:72.268, recall:67.599, loss:2.755 at 94
+04/23 21:49:14:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:49:14:  ---------
+04/23 21:51:23:  #RES: f1:69.955, precision:72.371, recall:67.695, loss:2.742 at 97
+04/23 21:51:23:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:51:23:  ---------
+04/23 21:53:33:  #RES: f1:69.756, precision:72.165, recall:67.502, loss:2.584 at 100
+04/23 21:53:33:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:53:33:  ---------
+04/23 21:55:42:  #RES: f1:69.756, precision:72.165, recall:67.502, loss:2.640 at 103
+04/23 21:55:42:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:55:42:  ---------
+04/23 21:57:52:  #RES: f1:69.357, precision:71.753, recall:67.117, loss:2.826 at 106
+04/23 21:57:52:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 21:57:52:  ---------
+04/23 22:00:02:  #RES: f1:68.161, precision:70.515, recall:65.959, loss:2.548 at 109
+04/23 22:00:02:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:00:02:  ---------
+04/23 22:02:11:  #RES: f1:70.653, precision:73.093, recall:68.370, loss:2.738 at 112
+04/23 22:02:11:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:02:11:  ---------
+04/23 22:04:21:  #RES: f1:69.258, precision:71.649, recall:67.020, loss:2.662 at 115
+04/23 22:04:21:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:04:21:  ---------
+04/23 22:06:30:  #RES: f1:69.457, precision:71.856, recall:67.213, loss:2.925 at 118
+04/23 22:06:30:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:06:30:  ---------
+04/23 22:08:40:  #RES: f1:69.656, precision:72.062, recall:67.406, loss:2.943 at 121
+04/23 22:08:40:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:08:40:  ---------
+04/23 22:10:49:  #RES: f1:70.254, precision:72.680, recall:67.985, loss:2.880 at 124
+04/23 22:10:49:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:10:49:  ---------
+04/23 22:13:00:  #RES: f1:69.955, precision:72.371, recall:67.695, loss:2.768 at 127
+04/23 22:13:00:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:13:00:  ---------
+04/23 22:15:09:  #RES: f1:69.656, precision:72.062, recall:67.406, loss:2.701 at 130
+04/23 22:15:09:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:15:09:  ---------
+04/23 22:17:19:  #RES: f1:69.856, precision:72.268, recall:67.599, loss:2.784 at 133
+04/23 22:17:19:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:17:19:  ---------
+04/23 22:19:28:  #RES: f1:69.856, precision:72.268, recall:67.599, loss:3.041 at 136
+04/23 22:19:28:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:19:28:  ---------
+04/23 22:21:37:  #RES: f1:69.357, precision:71.753, recall:67.117, loss:3.045 at 139
+04/23 22:21:37:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:21:37:  ---------
+04/23 22:23:48:  #RES: f1:67.962, precision:70.309, recall:65.767, loss:2.694 at 141
+04/23 22:23:48:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:23:48:  ---------
+04/23 22:25:57:  #RES: f1:68.959, precision:71.340, recall:66.731, loss:2.664 at 144
+04/23 22:25:57:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:25:57:  ---------
+04/23 22:28:07:  #RES: f1:68.859, precision:71.237, recall:66.635, loss:2.928 at 147
+04/23 22:28:07:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:28:07:  ---------
+04/23 22:30:16:  #RES: f1:70.254, precision:72.680, recall:67.985, loss:2.790 at 150
+04/23 22:30:16:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:30:16:  ---------
+04/23 22:32:26:  #RES: f1:69.756, precision:72.165, recall:67.502, loss:2.787 at 153
+04/23 22:32:26:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:32:26:  ---------
+04/23 22:34:36:  #RES: f1:69.856, precision:72.268, recall:67.599, loss:2.863 at 156
+04/23 22:34:36:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:34:36:  ---------
+04/23 22:36:45:  #RES: f1:67.862, precision:70.206, recall:65.670, loss:2.926 at 159
+04/23 22:36:45:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:36:45:  ---------
+04/23 22:38:55:  #RES: f1:68.062, precision:70.412, recall:65.863, loss:3.363 at 162
+04/23 22:38:55:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:38:55:  ---------
+04/23 22:41:04:  #RES: f1:67.364, precision:69.691, recall:65.188, loss:2.930 at 165
+04/23 22:41:04:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:41:04:  ---------
+04/23 22:43:14:  #RES: f1:69.058, precision:71.443, recall:66.827, loss:2.884 at 168
+04/23 22:43:14:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:43:14:  ---------
+04/23 22:45:24:  #RES: f1:69.457, precision:71.856, recall:67.213, loss:2.933 at 171
+04/23 22:45:24:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:45:24:  ---------
+04/23 22:47:34:  #RES: f1:70.453, precision:72.887, recall:68.177, loss:2.988 at 174
+04/23 22:47:34:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:47:34:  ---------
+04/23 22:49:43:  #RES: f1:70.254, precision:72.680, recall:67.985, loss:2.899 at 177
+04/23 22:49:43:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:49:43:  ---------
+04/23 22:51:52:  #RES: f1:69.856, precision:72.268, recall:67.599, loss:2.920 at 180
+04/23 22:51:52:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:51:52:  ---------
+04/23 22:54:01:  #RES: f1:70.354, precision:72.784, recall:68.081, loss:3.002 at 183
+04/23 22:54:01:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:54:01:  ---------
+04/23 22:56:10:  #RES: f1:70.254, precision:72.680, recall:67.985, loss:2.943 at 186
+04/23 22:56:10:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:56:10:  ---------
+04/23 22:58:20:  #RES: f1:71.051, precision:73.505, recall:68.756, loss:3.089 at 189
+04/23 22:58:20:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 22:58:20:  ---------
+04/23 23:00:29:  #RES: f1:69.856, precision:72.268, recall:67.599, loss:2.952 at 192
+04/23 23:00:29:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:00:29:  ---------
+04/23 23:02:38:  #RES: f1:69.756, precision:72.165, recall:67.502, loss:2.902 at 195
+04/23 23:02:38:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:02:38:  ---------
+04/23 23:04:48:  #RES: f1:70.553, precision:72.990, recall:68.274, loss:2.922 at 198
+04/23 23:04:48:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:04:48:  ---------
+04/23 23:06:57:  #RES: f1:70.653, precision:73.093, recall:68.370, loss:2.967 at 200
+04/23 23:06:57:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:06:57:  ---------
+04/23 23:09:08:  #RES: f1:70.852, precision:73.299, recall:68.563, loss:3.001 at 203
+04/23 23:09:08:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:09:08:  ---------
+04/23 23:11:18:  #RES: f1:70.653, precision:73.093, recall:68.370, loss:3.009 at 206
+04/23 23:11:18:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:11:18:  ---------
+04/23 23:13:27:  #RES: f1:70.354, precision:72.784, recall:68.081, loss:3.088 at 209
+04/23 23:13:27:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:13:27:  ---------
+04/23 23:15:37:  #RES: f1:70.453, precision:72.887, recall:68.177, loss:3.029 at 212
+04/23 23:15:37:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:15:37:  ---------
+04/23 23:17:46:  #RES: f1:70.254, precision:72.680, recall:67.985, loss:3.131 at 215
+04/23 23:17:46:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:17:46:  ---------
+04/23 23:19:55:  #RES: f1:69.756, precision:72.165, recall:67.502, loss:2.832 at 218
+04/23 23:19:55:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:19:55:  ---------
+04/23 23:22:06:  #RES: f1:70.354, precision:72.784, recall:68.081, loss:nan at 221
+04/23 23:22:06:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:22:06:  ---------
+04/23 23:24:15:  #RES: f1:70.055, precision:72.474, recall:67.792, loss:2.860 at 224
+04/23 23:24:15:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:24:15:  ---------
+04/23 23:26:24:  #RES: f1:69.756, precision:72.165, recall:67.502, loss:2.856 at 227
+04/23 23:26:24:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:26:24:  ---------
+04/23 23:28:35:  #RES: f1:69.856, precision:72.268, recall:67.599, loss:2.867 at 230
+04/23 23:28:35:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:28:35:  ---------
+04/23 23:30:46:  #RES: f1:69.258, precision:71.649, recall:67.020, loss:2.861 at 233
+04/23 23:30:46:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:30:46:  ---------
+04/23 23:32:55:  #RES: f1:70.354, precision:72.784, recall:68.081, loss:3.036 at 236
+04/23 23:32:55:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:32:55:  ---------
+04/23 23:35:05:  #RES: f1:70.254, precision:72.680, recall:67.985, loss:2.878 at 239
+04/23 23:35:05:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:35:05:  ---------
+04/23 23:37:15:  #RES: f1:70.055, precision:72.474, recall:67.792, loss:2.782 at 242
+04/23 23:37:15:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:37:15:  ---------
+04/23 23:39:25:  #RES: f1:69.856, precision:72.268, recall:67.599, loss:2.751 at 245
+04/23 23:39:25:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:39:25:  ---------
+04/23 23:41:35:  #RES: f1:69.656, precision:72.062, recall:67.406, loss:2.766 at 248
+04/23 23:41:35:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:41:35:  ---------
+04/23 23:43:45:  #RES: f1:70.254, precision:72.680, recall:67.985, loss:3.145 at 251
+04/23 23:43:45:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:43:45:  ---------
+04/23 23:45:54:  #RES: f1:70.254, precision:72.680, recall:67.985, loss:2.957 at 254
+04/23 23:45:54:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:45:54:  ---------
+04/23 23:48:04:  #RES: f1:70.553, precision:72.990, recall:68.274, loss:2.911 at 257
+04/23 23:48:04:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:48:04:  ---------
+04/23 23:50:14:  #RES: f1:70.154, precision:72.577, recall:67.888, loss:2.950 at 260
+04/23 23:50:14:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:50:14:  ---------
+04/23 23:52:23:  #RES: f1:70.354, precision:72.784, recall:68.081, loss:2.935 at 263
+04/23 23:52:23:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:52:23:  ---------
+04/23 23:54:33:  #RES: f1:70.553, precision:72.990, recall:68.274, loss:2.995 at 266
+04/23 23:54:33:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:54:33:  ---------
+04/23 23:56:42:  #RES: f1:70.254, precision:72.680, recall:67.985, loss:2.972 at 269
+04/23 23:56:42:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:56:42:  ---------
+04/23 23:58:52:  #RES: f1:70.154, precision:72.577, recall:67.888, loss:3.001 at 272
+04/23 23:58:52:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/23 23:58:52:  ---------
+04/24 00:01:02:  #RES: f1:70.653, precision:73.093, recall:68.370, loss:3.027 at 275
+04/24 00:01:02:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/24 00:01:02:  ---------
+04/24 00:03:11:  #RES: f1:70.752, precision:73.196, recall:68.467, loss:3.014 at 278
+04/24 00:03:11:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/24 00:03:11:  ---------
+04/24 00:05:20:  #RES: f1:70.055, precision:72.474, recall:67.792, loss:2.954 at 280
+04/24 00:05:20:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/24 00:05:20:  ---------
+04/24 00:07:31:  #RES: f1:70.254, precision:72.680, recall:67.985, loss:2.971 at 283
+04/24 00:07:31:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/24 00:07:31:  ---------
+04/24 00:09:41:  #RES: f1:69.856, precision:72.268, recall:67.599, loss:2.872 at 286
+04/24 00:09:41:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/24 00:09:41:  ---------
+04/24 00:11:50:  #RES: f1:69.756, precision:72.165, recall:67.502, loss:2.872 at 289
+04/24 00:11:50:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/24 00:11:50:  ---------
+04/24 00:14:00:  #RES: f1:69.656, precision:72.062, recall:67.406, loss:2.869 at 292
+04/24 00:14:00:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/24 00:14:00:  ---------
+04/24 00:16:09:  #RES: f1:69.656, precision:72.062, recall:67.406, loss:2.881 at 295
+04/24 00:16:09:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/24 00:16:09:  ---------
+04/24 00:18:18:  #RES: f1:69.557, precision:71.959, recall:67.310, loss:2.892 at 298
+04/24 00:18:18:  Best: f1:72.646, precision:75.155, recall:70.299, loss:1.984 at 35
+04/24 00:18:18:  ---------
