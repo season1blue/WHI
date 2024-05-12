@@ -21,7 +21,8 @@ def evaluate(args, vb_model, eval_dataloader, test_paspect, sentiment, test_tpai
 
             outputs = vb_model(**batch)
             tmp_eval_loss, text_logits, cross_logits = outputs["loss"], outputs["logits"], outputs["cross_logits"]
-            eval_loss += tmp_eval_loss
+            if not torch.isnan(tmp_eval_loss):
+                eval_loss += tmp_eval_loss
 
             text_pred_labels = np.argmax(text_logits.cpu(), -1)
             text_pred_list.append(text_pred_labels)

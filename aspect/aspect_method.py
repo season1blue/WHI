@@ -56,15 +56,11 @@ def logits2span_bk(p_pred_labels, text_inputs, p_pairs):
     return pred_pair_list
 
 def logits2span(p_pred_labels, text_inputs, p_pairs):
-    gold_num = 0
-    predict_num = 0
-    correct_num = 0
     pred_pair_list = []
     for i, pred_label in enumerate(p_pred_labels):
         word_ids = text_inputs.word_ids(batch_index=i)
         flag = False
         pred_pair = set()
-        sentiment = 0
         start_pos = 0
         end_pos = 0
         for j, pp in enumerate(pred_label):
@@ -79,7 +75,6 @@ def logits2span(p_pred_labels, text_inputs, p_pairs):
                         pred_pair.add((str(start_pos) + "-" + str(end_pos)))
                     start_pos = word_ids[j]
                     end_pos = word_ids[j]
-                    sentiment = pp - 2
                     flag = True
                 elif pp == 2:  # I
                     if flag:
@@ -88,11 +83,7 @@ def logits2span(p_pred_labels, text_inputs, p_pairs):
                     if flag:
                         pred_pair.add((str(start_pos) + "-" + str(end_pos)))
                     flag = False
-        true_pair = set(pairs[0] for pairs in p_pairs[i])
-        gold_num += len(true_pair)
-        predict_num += len(list(pred_pair))
         pred_pair_list.append(pred_pair.copy())
-        correct_num += len(true_pair & pred_pair)
     return pred_pair_list
 
 def cal_f1(p_pred_labels, text_inputs, p_pairs, is_result=False):
@@ -441,7 +432,8 @@ class aspect_method():
                 best_model = model
                 # save model 
                 print(results)
-                torch.save(model, os.path.join(self.args.cache_dir, "predict.pt"))
+                predict_checkpoint_path = os.path.join(self.args.cache_dir, self.args.dataset_type, "predict_" + self.args.dataset_type + ".pt")
+                torch.save(model, predict_checkpoint_path)
 
 
         # 完成predict，返回dev预测结果
@@ -454,18 +446,19 @@ class aspect_method():
     def predict(self, data_type="train"):
         data = self.train_data if data_type == "train" else self.test_data
         dataloader = DataLoader(data, batch_size=self.args.batch_size)
-        checkpoint_path = os.path.join(self.args.cache_dir, "predict.pt")
+        # checkpoint_path = os.path.join(self.args.cache_dir, "predict.pt")
+        predict_checkpoint_path = os.path.join(self.args.cache_dir, self.args.dataset_type, "predict_" + self.args.dataset_type + ".pt")
 
 
-        if os.path.exists(checkpoint_path) and not self.args.refresh_aspect:
-            print(checkpoint_path, "exists, loading")
+        if os.path.exists(predict_checkpoint_path) and not self.args.refresh_aspect:
+            print(predict_checkpoint_path, "exists, loading")
             # text_config, image_config = model_select(self.args)
             # apsect_predict_model = ASPModel(self.args, text_config, image_config, text_num_labels=3, alpha=self.args.alpha, beta=self.args.beta)
-            apsect_predict_model = torch.load(checkpoint_path)
+            apsect_predict_model = torch.load(predict_checkpoint_path)
             _, aspect = self.evaluate(self.args, apsect_predict_model, dataloader, data.raw_data, data.pairs)
             
         else:
-            print(checkpoint_path, "is not exists")
+            print(predict_checkpoint_path, "is not exists")
             apsect_predict_model = self.train()
             _, aspect = self.evaluate(self.args, apsect_predict_model, dataloader, data.raw_data, data.pairs)
 

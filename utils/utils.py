@@ -24,7 +24,7 @@ def parse_arg():
     
     parser.add_argument('--aspect_epochs', type=int, default=100)
     
-    parser.add_argument('--dataset_type', type=str, default='2015', nargs='?', help='display a string')
+    parser.add_argument('--dataset_type', type=str, default='2017', nargs='?', help='display a string')
     parser.add_argument('--task_name', type=str, default='dualc', nargs='?', help='display a string')
     parser.add_argument('--batch_size', type=int, default=4, nargs='?', help='display an integer')
     parser.add_argument('--text_num_labels', type=int, default=3)

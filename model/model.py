@@ -132,7 +132,7 @@ class SENModel(nn.Module):
         text_feature = text_feature[:, 0]
         aspect_feature = aspect_feature[:, 0]
         
-        fusion = text_feature + aspect_feature + image_feature
+        fusion = text_feature + aspect_feature
 
 
         sequence_output1 = self.dropout(fusion)
