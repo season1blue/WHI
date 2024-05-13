@@ -152,9 +152,11 @@ class SENModel(nn.Module):
         else:
             image_text_cross_attention, _ = self.image_text_cross(text_feature, image_feature, image_feature)
             cross_logits = self.classifier0(image_text_cross_attention)
+            print(cross_logits.size())
+            exit()
             mask = (labels != -100)
             mask[:, 0] = 1
-            cross_crf_loss = -self.CRF(cross_logits, cross_labels, mask=mask) / 10
+            cross_crf_loss = -self.CRF(cross_logits, sentiment, mask=mask) / 10
 
             # * token-patch matching # word patch align loss
             batch_size, image_len, _ = image_feature.shape
