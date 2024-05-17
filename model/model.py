@@ -75,7 +75,7 @@ class SENModel(nn.Module):
         self.loss_fct = CrossEntropyLoss()
         self.text_linear = nn.Linear(text_config.hidden_size, args.text_num_labels)
         self.classifier0 = nn.Linear(text_config.hidden_size, args.text_num_labels)
-        self.image_linear = nn.Linear(vision_config.hidden_size, text_config.hidden_size)
+        self.image_linear = nn.Linear(vision_config.hidden_size, args.text_num_labels)
         self.CRF = CRF(args.text_num_labels, batch_first=True)
 
         # text model
@@ -128,35 +128,20 @@ class SENModel(nn.Module):
             text_feature = encoder_outputs.last_text_state
             image_feature = encoder_outputs.last_vision_state
 
-        image_feature = self.image_linear(image_feature[:, 0])
-        text_feature = text_feature[:, 0]
-        aspect_feature = aspect_feature[:, 0]
+        fusion = text_feature[:, 0] + aspect_feature[:, 0]
         
-        fusion = text_feature + aspect_feature
-
-
         sequence_output1 = self.dropout(fusion)
         fusion_logits = self.text_linear(sequence_output1)
-
-        
-        
-        # * text only # text_loss
-        # loss_fct = GCELoss()            
-        # weights = torch.ones(labels.shape).to(labels.device)
-        # text_loss = loss_fct(text_token_logits.view(-1, self.text_num_labels), labels.view(-1), weights)
         
         text_loss = self.loss_fct(fusion_logits.view(-1, self.args.text_num_labels), sentiment.view(-1))
         if self.args.only_text_loss :
-            #  * vision-aware text # cross_crf_loss
             loss = text_loss 
         else:
-            image_text_cross_attention, _ = self.image_text_cross(text_feature, image_feature, image_feature)
-            cross_logits = self.classifier0(image_text_cross_attention)
-            print(cross_logits.size())
-            exit()
-            mask = (labels != -100)
-            mask[:, 0] = 1
-            cross_crf_loss = -self.CRF(cross_logits, sentiment, mask=mask) / 10
+            # image_text_cross_attention, _ = self.image_text_cross(aspect_feature, image_feature, image_feature)  # image 16, 50, 768 text 16, 60, 768
+            # image_fusion = text_feature + aspect_feature + image_text_cross_attention  
+            # image_logits = self.image_linear(image_fusion[:, 0])
+            # image_loss = self.loss_fct(image_logits.view(-1, self.args.text_num_labels), sentiment.view(-1))
+
 
             # * token-patch matching # word patch align loss
             batch_size, image_len, _ = image_feature.shape
@@ -165,7 +150,7 @@ class SENModel(nn.Module):
             ot_dist = optimal_transport_dist(text_feature, image_feature, text_pad, image_pad)
             word_region_align_loss = ot_dist.mean()
 
-            loss = self.alpha * text_loss + cross_crf_loss  + self.beta * word_region_align_loss   #27
+            loss = text_loss +  self.beta * word_region_align_loss   #27
 
 
         if self.args.add_gan_loss:

@@ -304,7 +304,7 @@ class aspect_dataset(Dataset):
         
         if os.path.exists(inputs_dir) and not refresh_data:
             print("Loading data from save file")
-            data = torch.load(inputs_dir)
+            data = torch.load(inputs_dir, map_location=self.args.device)
         else:
             print("reprocessing the data")
             tokenized_inputs = self.tokenize_data(sentence_l, image_l, label_l, pair_l, senti_l, allabel_l)
@@ -454,7 +454,7 @@ class aspect_method():
             print(predict_checkpoint_path, "exists, loading")
             # text_config, image_config = model_select(self.args)
             # apsect_predict_model = ASPModel(self.args, text_config, image_config, text_num_labels=3, alpha=self.args.alpha, beta=self.args.beta)
-            apsect_predict_model = torch.load(predict_checkpoint_path)
+            apsect_predict_model = torch.load(predict_checkpoint_path,  map_location=self.args.device)
             _, aspect = self.evaluate(self.args, apsect_predict_model, dataloader, data.raw_data, data.pairs)
             
         else:

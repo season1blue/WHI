@@ -24,7 +24,8 @@ from utils.TrainInputProcess import prepare_data
 args = parse_arg()
 # set random seed
 set_random_seed(args.random_seed)
-args.device = torch.device(args.device_id if torch.cuda.is_available() else "cpu")
+args.device = torch.device(args.device_id if torch.cuda.is_available() else 'cpu')
+print(args.device)
 
 
 # 1、创建一个logger
@@ -55,12 +56,12 @@ print(file_path)
 if not os.path.exists(file_path) or args.refresh_data:
     print("Preparing Data")
     prepare_data(args, file_path=file_path)
-    
-data_inputs = torch.load(file_path)
+
+data_inputs = torch.load(file_path, map_location=args.device)
 
 from aspect.aspect_method import aspect_method
 # Aspect
-aspect_predictor            = aspect_method(args=args)
+aspect_predictor             = aspect_method(args=args)
 train_aspect, train_tpairs   = aspect_predictor.predict("train")
 test_aspect, test_tpairs     = aspect_predictor.predict("test")
 

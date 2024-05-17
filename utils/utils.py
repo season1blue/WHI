@@ -22,7 +22,7 @@ def parse_arg():
     parser = argparse.ArgumentParser()
 
     
-    parser.add_argument('--aspect_epochs', type=int, default=100)
+    parser.add_argument('--aspect_epochs', type=int, default=200)
     
     parser.add_argument('--dataset_type', type=str, default='2017', nargs='?', help='display a string')
     parser.add_argument('--task_name', type=str, default='dualc', nargs='?', help='display a string')
@@ -75,8 +75,8 @@ def parse_arg():
     args.data_image_dir = '../data/ImgData/twitter' + args.dataset_type
     args.cache_dir = 'cache'
     
-    args.refresh_aspect = False
-    args.refresh_data = False
+    args.refresh_aspect = True
+    args.refresh_data = True
     
     return args
 

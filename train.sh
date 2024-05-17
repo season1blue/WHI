@@ -20,7 +20,7 @@ do
     --device_id "cuda:0" \
     --enable_log \
     --add_gan \
-    # --only_text_loss \
+    --only_text_loss \
     # --add_gan_loss
     # --alpha 0 \
     # --beta 0 \
