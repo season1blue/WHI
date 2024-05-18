@@ -16,7 +16,7 @@ from utils.MyDataSet import MyDataSet2
 from utils.metrics import cal_f1
 from utils.utils import set_random_seed, model_select, parse_arg
 from utils.evaluate import evaluate
-
+from transformers import BartModel, T5Model, AutoModel
 from utils.TrainInputProcess import prepare_data
 # docker run -it --init --gpus=all  --name sa -v /media/seasonubt/data/Research/EA/:/workspace cuda118 /bin/bash
 
@@ -59,9 +59,14 @@ if not os.path.exists(file_path) or args.refresh_data:
 
 data_inputs = torch.load(file_path, map_location=args.device)
 
+
+if args.share_encoder:
+    args.shared_text_model = AutoModel.from_pretrained(args.name_path_dict[args.text_model_name])
+    args.shared_image_model = AutoModel.from_pretrained(args.name_path_dict[args.image_model_name])
+
+
+
 from aspect.aspect_method import aspect_method
-
-
 # Aspect
 aspect_predictor             = aspect_method(args=args)
 # 得到aspect（两种方式：1. 通过mate的模型预测得到 2.单纯测masc任务时，从标注中得到）

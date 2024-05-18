@@ -78,6 +78,7 @@ def parse_arg():
     args.refresh_predict_model = False
     args.refresh_data = False
     args.task = "mabsa"   # for testing perf for masc, or set to "mabsa" for all perf
+    args.share_encoder = False
     
     return args
 

@@ -83,8 +83,12 @@ class SENModel(nn.Module):
         self.encoder = UnimoEncoder(vision_config=self.vision_config, text_config=self.text_config)
         self.args = args
         
-        self.text_model = AutoModel.from_pretrained(args.name_path_dict[text_model_name])
-        self.image_model = AutoModel.from_pretrained(args.name_path_dict[image_model_name])
+        if self.args.share_encoder:
+            self.text_model = args.shared_text_model
+            self.image_model = args.shared_image_model
+        else:
+            self.text_model = AutoModel.from_pretrained(args.name_path_dict[text_model_name])
+            self.image_model = AutoModel.from_pretrained(args.name_path_dict[image_model_name])
 
     def forward(self,
                 input_ids=None,

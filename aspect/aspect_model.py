@@ -34,11 +34,17 @@ class ASPModel(nn.Module):
                  beta,
                  text_model_name="deberta",
                  image_model_name='vit',
+                 text_model=None,
+                 image_model=None
                  ):
         super().__init__()
 
-        self.text_model = AutoModel.from_pretrained(args.name_path_dict[text_model_name])
-        self.image_model = AutoModel.from_pretrained(args.name_path_dict[image_model_name])
+        if self.args.share_encoder:
+            self.text_model = args.shared_text_model
+            self.image_model = args.shared_image_model
+        else:
+            self.text_model = AutoModel.from_pretrained(args.name_path_dict[text_model_name])
+            self.image_model = AutoModel.from_pretrained(args.name_path_dict[image_model_name])
 
         self.alpha = alpha
         self.beta = beta
