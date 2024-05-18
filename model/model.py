@@ -118,14 +118,14 @@ class SENModel(nn.Module):
             extended_attention_mask = attention_mask.unsqueeze(1).unsqueeze(1)
             encoder_outputs = self.encoder(
                 vision_embeds=image_feature,
-                text_embeds=text_feature,
+                text_embeds=aspect_feature,
                 attention_mask=extended_attention_mask,
                 output_attentions=True,
                 output_hidden_states=True,
                 return_dict=return_dict,
             )
 
-            text_feature = encoder_outputs.last_text_state
+            aspect_feature = encoder_outputs.last_text_state
             image_feature = encoder_outputs.last_vision_state
 
         fusion = text_feature[:, 0] + aspect_feature[:, 0]

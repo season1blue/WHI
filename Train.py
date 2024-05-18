@@ -60,10 +60,13 @@ if not os.path.exists(file_path) or args.refresh_data:
 data_inputs = torch.load(file_path, map_location=args.device)
 
 from aspect.aspect_method import aspect_method
+
+
 # Aspect
 aspect_predictor             = aspect_method(args=args)
-train_aspect, train_tpairs   = aspect_predictor.predict("train")
-test_aspect, test_tpairs     = aspect_predictor.predict("test")
+# 得到aspect（两种方式：1. 通过mate的模型预测得到 2.单纯测masc任务时，从标注中得到）
+train_aspect, train_tpairs   = aspect_predictor.get_aspect("train", args.task)
+test_aspect,  test_tpairs    = aspect_predictor.get_aspect("test",  args.task)
 
 # print(data_inputs["train"].keys())  # dict_keys(['input_ids', 'token_type_ids', 'attention_mask', 'aspect_ids', 'aspect_masks', 'sentiment', 'pixel_values', 'image_feature'])
 train_data, train_paspect = aspect_predictor.prepare_data(train_aspect, train_tpairs, "train")

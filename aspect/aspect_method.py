@@ -153,7 +153,7 @@ class aspect_dataset(Dataset):
         if args.image_model_name == "clip" or "laion":
             self.image_model = CLIPVisionModel.from_pretrained(args.name_path_dict[args.image_model_name]).to(args.device)
 
-        self.raw_data, self.pairs, self.sentence = self.process_data(self.args.refresh_aspect)
+        self.raw_data, self.pairs, self.sentence = self.process_data(self.args.refresh_data)
 
 
 
@@ -338,7 +338,7 @@ class aspect_method():
 
         aspect_pred_list, span_list = [], []
         with torch.no_grad():
-            for i, batch in enumerate(tqdm(eval_dataloader, desc="aspect processing")):
+            for i, batch in enumerate(tqdm(eval_dataloader, desc="aspect processing", ncols=80)):
                 for k in batch:
                     if isinstance(batch[k], torch.Tensor):
                         batch[k] = batch[k].to(args.device)
@@ -443,39 +443,44 @@ class aspect_method():
 
         return best_model
 
-    def predict(self, data_type="train"):
+    def get_aspect(self, data_type="train", task="mabsa"):
         data = self.train_data if data_type == "train" else self.test_data
-        dataloader = DataLoader(data, batch_size=self.args.batch_size)
-        # checkpoint_path = os.path.join(self.args.cache_dir, "predict.pt")
-        predict_checkpoint_path = os.path.join(self.args.cache_dir, self.args.dataset_type, "predict_" + self.args.dataset_type + ".pt")
-
-
-        if os.path.exists(predict_checkpoint_path) and not self.args.refresh_aspect:
-            print(predict_checkpoint_path, "exists, loading")
-            # text_config, image_config = model_select(self.args)
-            # apsect_predict_model = ASPModel(self.args, text_config, image_config, text_num_labels=3, alpha=self.args.alpha, beta=self.args.beta)
-            apsect_predict_model = torch.load(predict_checkpoint_path,  map_location=self.args.device)
+        print("training task is ", task)
+        if task=="mabsa":
+            dataloader = DataLoader(data, batch_size=self.args.batch_size)
+            # MABSA需要先训练MATE在预测aspect
+            predict_checkpoint_path = os.path.join(self.args.cache_dir, self.args.dataset_type, "predict_" + self.args.dataset_type + ".pt")
+            # 预测模型方式，是加载还是重新训练
+            if os.path.exists(predict_checkpoint_path) and not self.args.refresh_predict_model:
+                print(predict_checkpoint_path, "exists, loading for predict aspect")
+                apsect_predict_model = torch.load(predict_checkpoint_path,  map_location=self.args.device)
+            else:
+                print(predict_checkpoint_path, "is not exists, training for predict aspect")
+                apsect_predict_model = self.train()
+                
             _, aspect = self.evaluate(self.args, apsect_predict_model, dataloader, data.raw_data, data.pairs)
-            
+
+            text_aspect = deepcopy(aspect)
+            for i, a in enumerate(aspect):
+                text_aspect[i] = [data.sentence[i][
+                    max(0, t[0]) : min(len(data.sentence[i]), t[1]+1)
+                    ] 
+                    for t in a]
+                # print(i)
+                # print(a)
+                # print(data.sentence[i])
+                # print(data.pairs[i])
+                # print(text_aspect[i])
+            return text_aspect, data.pairs
         else:
-            print(predict_checkpoint_path, "is not exists")
-            apsect_predict_model = self.train()
-            _, aspect = self.evaluate(self.args, apsect_predict_model, dataloader, data.raw_data, data.pairs)
-
-        text_aspect = deepcopy(aspect)
-        for i, a in enumerate(aspect):
-            text_aspect[i] = [data.sentence[i][
-                max(0, t[0]) : min(len(data.sentence[i]), t[1]+1)
-                ] 
-                for t in a]
-            # print(i)
-            # print(a)
-            # print(data.sentence[i])
-            # print(data.pairs[i])
-            # print(text_aspect[i])
-
-
-        return text_aspect, data.pairs
+            # data.pairs -> format as text_aspect
+            true_aspect = []
+            for i, pair in enumerate(data.pairs):
+                tmp_aspect = [p[1].split(" ") for p in pair]
+                true_aspect.append(tmp_aspect)
+            return true_aspect, data.pairs
+            
+    
     
     def prepare_data(self, predict_aspect, true_aspect, data_type="train"):
         data = self.train_data if data_type=="train" else self.test_data

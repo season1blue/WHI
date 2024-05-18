@@ -19,8 +19,8 @@ do
     --log_dir log.log \
     --device_id "cuda:0" \
     --enable_log \
-    --add_gan \
     --only_text_loss \
+    --add_gan \
     # --add_gan_loss
     # --alpha 0 \
     # --beta 0 \

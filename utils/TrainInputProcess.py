@@ -50,7 +50,7 @@ class TrainInputProcess:
         self.data_text_dir = data_text_dir
         self.data_image_dir = data_image_dir
 
-        self.dataset_types = ['train','dev','test']
+        self.dataset_types = ['train','test']
         self.text_type = '.txt'
         self.data_dict = dict()
         self.input = dict()
