@@ -9,7 +9,7 @@ do
     python3 ./Train.py \
     --epochs 150 \
     --save_steps $j \
-    --dataset_type 2015 \
+    --dataset_type 2017 \
     --batch_size $i \
     --lr 1e-5 \
     --text_model_name "deberta" \

@@ -91,12 +91,12 @@ class SENModel(nn.Module):
             self.image_model = AutoModel.from_pretrained(args.name_path_dict[image_model_name])
 
     def forward(self,
-                input_ids=None,
+                input_ids,
+                image_feature,
                 attention_mask=None,
                 aspect_ids=None,
                 aspect_mask=None,
                 text_feature=None,
-                image_feature=None,
                 token_type_ids=None,
                 position_ids=None,
                 pixel_values=None,
@@ -117,7 +117,6 @@ class SENModel(nn.Module):
         text_feature = text_outputs["last_hidden_state"]  #16, 60, 768
         aspect_feature = aspect_outputs["last_hidden_state"]
         
-
         if self.args.add_gan:
             extended_attention_mask = attention_mask.unsqueeze(1).unsqueeze(1)
             encoder_outputs = self.encoder(

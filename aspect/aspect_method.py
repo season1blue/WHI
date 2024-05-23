@@ -21,6 +21,7 @@ from copy import deepcopy
 from fuzzywuzzy import fuzz
 from transformers import AutoModel
 from transformers import CLIPVisionModel
+from torchstat import stat
 
 def logits2span_bk(p_pred_labels, text_inputs, p_pairs):
     pred_pair_list = []
@@ -514,7 +515,7 @@ class aspect_method():
                 # if max_value is None:
                 #     print("ttt", t_aspect, "ppp", sliced_aspect, "m", max_similarity)
                 
-                if max_similarity > 80:  # 相似度较高
+                if max_similarity > self.args.similar_arg: 
                     new_pairs.append((sliced_aspect, max_value))
 
             # print(t_aspect)  # 真实aspect

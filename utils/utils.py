@@ -42,6 +42,7 @@ def parse_arg():
     parser.add_argument("--adam_epsilon", default=1e-8, type=float, help="Epsilon for Adam optimizer.")
     parser.add_argument("--weight_decay", default=0.01, type=float)
     parser.add_argument("--warmup_steps", default=100, type=int, help="Linear warmup over warmup_steps.")
+    parser.add_argument("--similar_arg", default=80, type=int)
     parser.add_argument("--gradient_accumulation_steps", type=int, default=1, help="Number of updates steps to accumulate before performing a backward/update pass.",)
     parser.add_argument("--logging_steps", type=int, default=500, help="Log every X updates steps.")  # origin 50
     parser.add_argument("--max_grad_norm", default=1.0, type=float, help="Max gradient norm.")
@@ -78,7 +79,9 @@ def parse_arg():
     args.refresh_predict_model = False
     args.refresh_data = False
     args.task = "mabsa"   # for testing perf for masc, or set to "mabsa" for all perf
-    args.share_encoder = False
+    args.share_encoder = False  # False 不共享
+    args.cal_model_parameters = False
+    
     
     return args
 
@@ -228,20 +231,23 @@ def cal_loss(output):
         # print("-----")
         # print(output.all_generated_vision_hidden_states)
         # print(output.all_generated_text_hidden_states)
-        vae_loss_t2v = [
-            ws_dis(v, k.detach())  * m / m.sum((-1, -2))
-            for v, k, m in zip(output.all_generated_vision_hidden_states,
-                               output.vision_states, output.all_patch_policy)
-        ]
+        
+        # vae_loss_t2v = [
+        #     ws_dis(v, k.detach())  * m / m.sum((-1, -2))
+        #     for v, k, m in zip(output.all_generated_vision_hidden_states,
+        #                        output.vision_states, output.all_patch_policy)
+        # ]
+        
         vae_loss_v2t = [
             ws_dis(v, k.detach()) * m / m.sum((-1, -2))
             for v, k, m in zip(output.all_generated_text_hidden_states,
                                output.hidden_states, output.all_token_policy)  #!
         ]
 
-        vae_loss = ((sum(vae_loss_t2v) * img_tag).mean() +
-                    (sum(vae_loss_v2t) * img_tag).mean()) / len(
-                        output.all_generated_vision_hidden_states)
+        # vae_loss = ((sum(vae_loss_t2v) * img_tag).mean() +
+        #             (sum(vae_loss_v2t) * img_tag).mean()) / len(
+        #                 output.all_generated_vision_hidden_states)
+        vae_loss = ( sum(vae_loss_v2t) * img_tag).mean() / len(output.all_generated_vision_hidden_states)
         loss += vae_loss * 0.001
         
         # if 0 < loss.item() < 100000  :

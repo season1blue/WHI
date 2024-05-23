@@ -39,7 +39,7 @@ class ASPModel(nn.Module):
                  ):
         super().__init__()
 
-        if self.args.share_encoder:
+        if args.share_encoder:
             self.text_model = args.shared_text_model
             self.image_model = args.shared_image_model
         else:
@@ -69,7 +69,6 @@ class ASPModel(nn.Module):
     def forward(self, input_ids, pixel_values,
                 attention_mask=None, labels=None, cross_labels=None, pairs=None, image_feature=None,
             ):
-
 
         # image_outputs = self.vit(pixel_values)
 

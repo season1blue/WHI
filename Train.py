@@ -19,6 +19,7 @@ from utils.evaluate import evaluate
 from transformers import BartModel, T5Model, AutoModel
 from utils.TrainInputProcess import prepare_data
 # docker run -it --init --gpus=all  --name sa -v /media/seasonubt/data/Research/EA/:/workspace cuda118 /bin/bash
+from torchstat import stat
 
 # parameters
 args = parse_arg()
@@ -149,6 +150,23 @@ logger.info("======================== New Round =============================")
 logger.info(f"{args.dataset_type}, add_gan:{args.add_gan}, add_gan_loss: {args.add_gan_loss}, add_gpt: {args.add_gpt}, text_model {args.text_model_name}")
 logger.info(args)
 
+
+if args.cal_model_parameters:
+    aspect_model_params, sentiment_model_params = 0, 0
+    predict_checkpoint_path = os.path.join(args.cache_dir, args.dataset_type, "predict_" + args.dataset_type + ".pt")
+    aspect_model = torch.load(predict_checkpoint_path, map_location=torch.device('cpu'))
+    sentiment_model =  vb_model
+
+    aspect_model_params = stat(aspect_model, (16, 60), (16, 3, 224, 224))
+    sentiment_model_params = stat(sentiment_model, [(16, 60), (16, 3, 224, 224)])
+    
+    print(aspect_model_params)
+    print(sentiment_model_params)
+    print("total param", aspect_model_params + sentiment_model_params)
+    exit("complete calculating model parameters")
+        
+
+
 for epoch in range(epochs_trained, int(args.epochs)):
 
     for step, batch in tqdm(enumerate(train_dataloader), desc="Train", ncols=50, total=len(train_dataloader)):
@@ -197,6 +215,8 @@ for epoch in range(epochs_trained, int(args.epochs)):
                 if results["f1"] >= best_result["f1"]:
                     best_result = results
                     best_result["epoch"] = epoch
+                    sentiment_checkpoint_path = os.path.join(args.cache_dir, args.dataset_type, "sentiment_" + args.dataset_type + ".pt")
+                    torch.save(vb_model, sentiment_checkpoint_path)
                 print()
                 logger.info("#RES: f1:{0:.3f}, precision:{1:.3f}, recall:{2:.3f}, loss:{3:.3f} at {4}".format(results["f1"], results["precision"], results["recall"], results["loss"], epoch))
                 logger.info("Best: f1:{0:.3f}, precision:{1:.3f}, recall:{2:.3f}, loss:{3:.3f} at {4}".format(best_result["f1"], best_result["precision"], best_result["recall"], best_result["loss"], best_result["epoch"]))
