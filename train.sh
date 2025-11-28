@@ -12,7 +12,7 @@ do
     --dataset_type 2015 \
     --batch_size $i \
     --lr 1e-5 \
-    --text_model_name "deberta" \
+    --text_model_name "roberta" \
     --image_model_name "clip" \
     --output_dir /data/results \
     --output_result_file /data/result.txt \
